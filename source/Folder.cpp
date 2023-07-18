@@ -15,7 +15,8 @@
 Folder::Folder(FileSystem* producer, const Descriptor& descriptor)
    : A::Folder {MetaOf<::Folder>(), descriptor}
    , ProducedFrom {producer, descriptor} {
-
+   VERBOSE_VFS("Initializing...");
+   VERBOSE_VFS("Initialized");
 }
 
 /// File destruction                                                          

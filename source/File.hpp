@@ -18,7 +18,12 @@ struct File final : A::File, ProducedFrom<FileSystem> {
    LANGULUS_BASES(A::File);
 
 private:
-   Path mFilePath;
+   Token mParentDirectory;
+   Token mFileName;
+   Token mFileExtension;
+
+   Own<PHYSFS_File*> mFile;
+   PHYSFS_Stat mFileInfo {};
 
 public:
    File(FileSystem*, const Descriptor&);
@@ -40,4 +45,7 @@ public:
 
    NOD() Ptr<A::File::StreamIn>  NewStreamIn();
    NOD() Ptr<A::File::StreamOut> NewStreamOut();
+
+private:
+   void Close();
 };
