@@ -25,3 +25,13 @@ LANGULUS_EXCEPTION(FileSystem);
 
 /// Include PhysFS                                                            
 #include <src/physfs.h>
+
+/// Get the last PhysFS error string                                          
+NOD() LANGULUS(INLINED)
+Token GetLastError() noexcept {
+   const auto errorCode = PHYSFS_getLastErrorCode();
+   const auto readableError = PHYSFS_getErrorByCode(errorCode);
+   if (!readableError)
+      return "<undefined PhysFS error code>";
+   return readableError;
+}

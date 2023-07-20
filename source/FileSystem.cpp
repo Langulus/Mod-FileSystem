@@ -26,7 +26,7 @@ FileSystem::FileSystem(Runtime* runtime, const Descriptor&)
    if (0 == PHYSFS_init(nullptr)) {
       LANGULUS_ASSERT(
          false, FileSystem, "Error initializing file system",
-         " due to PHYSFS_init error: ", GetLastPhysFSErrorLiteral()
+         " due to PHYSFS_init error: ", GetLastError()
       );
    }
 
@@ -39,7 +39,7 @@ FileSystem::FileSystem(Runtime* runtime, const Descriptor&)
    if (0 == PHYSFS_mount(mMainDataPath.GetRaw(), nullptr, 0)) {
       LANGULUS_ASSERT(
          false, FileSystem, "Can't mount main data path",
-         " due to PHYSFS_mount error: ", GetLastPhysFSErrorLiteral()
+         " due to PHYSFS_mount error: ", GetLastError()
       );
    }
    VERBOSE_VFS("Mounted main data path: ", mMainDataPath);
@@ -49,17 +49,17 @@ FileSystem::FileSystem(Runtime* runtime, const Descriptor&)
    if (0 == PHYSFS_mount(mMainCachePath.GetRaw(), nullptr, 0)) {
       LANGULUS_ASSERT(
          false, FileSystem, "Can't mount main cache path",
-         " due to PHYSFS_mount error: ", GetLastPhysFSErrorLiteral()
+         " due to PHYSFS_mount error: ", GetLastError()
       );
    }
-   VERBOSE_VFS("Mounted main cache directory: ", mMainCacheDirectory);
+   VERBOSE_VFS("Mounted main cache directory: ", mMainCachePath);
 
    if (0 == PHYSFS_setWriteDir(mMainCachePath.GetRaw())) {
       Logger::Warning(Self(),
          "Can't set write directory: ", mMainCachePath);
       Logger::Warning(Self(),
          "File writing will be disabled, due to PHYSFS_setWriteDir error: ",
-         GetLastPhysFSErrorLiteral()
+         GetLastError()
       );
    }
    else VERBOSE_VFS("Mounted main write directory: ", mMainCachePath);
@@ -79,16 +79,17 @@ FileSystem::FileSystem(Runtime* runtime, const Descriptor&)
 
 /// Shutdown PhysFS                                                           
 FileSystem::~FileSystem() {
-   // Release all files before shitting physfs down                     
+   // Release all files before shutting physfs down                     
    mFileMap.Reset();
    mFiles.Reset();
    mFolderMap.Reset();
    mFolders.Reset();
 
+   // Shut PhysFS down                                                  
    if (0 == PHYSFS_deinit()) {
       Logger::Error(Self(), 
          "Error deinitializing file system due to PHYSFS_deinit error: ",
-         GetLastPhysFSErrorLiteral()
+         GetLastError()
       );
    }
 }
@@ -124,16 +125,17 @@ const A::File* FileSystem::GetFile(const Path& path) const {
 
    // Check if file is already interfaced                               
    const auto normalizedPath = path.Lowercase();
-   auto found = mFileMap.FindIndex(normalizedPath);
+   auto found = mFileMap.Find(normalizedPath);
    if (found)
       return mFileMap.GetValue(found);
 
    // Produce a new file interface                                      
    Verbs::Create creator {Construct::From<File>(path)};
-   mFiles.Create(creator);
+   const_cast<TFactoryUnique<File>&>(mFiles).Create(creator);
    if (creator.IsDone()) {
-      auto filePtr = creator.GetOutput().As<A::File*>();
-      mFileMap[normalizedPath] = filePtr;
+      auto filePtr = creator.GetOutput().As<File*>();
+      const_cast<TUnorderedMap<Path, File*>&>(mFileMap)
+         [normalizedPath] = filePtr;
       return filePtr;
    }
 
@@ -151,16 +153,17 @@ const A::Folder* FileSystem::GetFolder(const Path& path) const {
 
    // Check if folder is already interfaced                             
    const auto normalizedPath = path.Lowercase();
-   auto found = mFolderMap.FindIndex(normalizedPath);
+   auto found = mFolderMap.Find(normalizedPath);
    if (found)
       return mFolderMap.GetValue(found);
 
    // Produce a new folder interface                                    
    Verbs::Create creator {Construct::From<Folder>(path)};
-   mFolders.Create(creator);
+   const_cast<TFactoryUnique<Folder>&>(mFolders).Create(creator);
    if (creator.IsDone()) {
-      auto folderPtr = creator.GetOutput().As<A::Folder*>();
-      mFolderMap[normalizedPath] = folderPtr;
+      auto folderPtr = creator.GetOutput().As<Folder*>();
+      const_cast<TUnorderedMap<Path, Folder*>&>(mFolderMap)
+         [normalizedPath] = folderPtr;
       return folderPtr;
    }
 

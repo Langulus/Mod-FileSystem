@@ -30,12 +30,12 @@ SCENARIO("File/folder creation", "[gui]") {
          // Create runtime at the root                                  
          root.CreateRuntime();
 
-         // Load ImGui module                                           
+         // Load file system module                                     
          root.LoadMod("FileSystem");
 
          WHEN("The file/folder is created via tokens") {
-            root.CreateUnitToken("File", "test.txt");
-            root.CreateUnitToken("Folder", "test folder");
+            auto producedFile = root.CreateUnitToken("File", "test.txt");
+            auto producedFold = root.CreateUnitToken("Folder", "test folder");
 
             // Update once                                              
             root.Update(Time::zero());
@@ -43,13 +43,19 @@ SCENARIO("File/folder creation", "[gui]") {
             THEN("Various traits change") {
                root.DumpHierarchy();
 
-               REQUIRE(true);
+               REQUIRE(producedFile.GetCount() == 1);
+               REQUIRE(producedFile.CastsTo<A::File>(1));
+               REQUIRE(producedFile.IsSparse());
+
+               REQUIRE(producedFold.GetCount() == 1);
+               REQUIRE(producedFold.CastsTo<A::Folder>(1));
+               REQUIRE(producedFold.IsSparse());
             }
          }
 
          WHEN("The file/folder is created via abstractions") {
-            root.CreateUnit<A::File>("test.txt");
-            root.CreateUnit<A::Folder>("test folder");
+            auto producedFile = root.CreateUnit<A::File>("test.txt");
+            auto producedFold = root.CreateUnit<A::Folder>("test folder");
 
             // Update once                                              
             root.Update(Time::zero());
@@ -57,7 +63,13 @@ SCENARIO("File/folder creation", "[gui]") {
             THEN("Various traits change") {
                root.DumpHierarchy();
 
-               REQUIRE(true);
+               REQUIRE(producedFile.GetCount() == 1);
+               REQUIRE(producedFile.CastsTo<A::File>(1));
+               REQUIRE(producedFile.IsSparse());
+
+               REQUIRE(producedFold.GetCount() == 1);
+               REQUIRE(producedFold.CastsTo<A::Folder>(1));
+               REQUIRE(producedFold.IsSparse());
             }
          }
          
