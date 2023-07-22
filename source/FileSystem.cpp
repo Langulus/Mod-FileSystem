@@ -121,7 +121,7 @@ void FileSystem::Select(Verb& verb) {
 ///   @param path - the filename to interface                                 
 ///   @return the file interface or nullptr on failure                        
 const A::File* FileSystem::GetFile(const Path& path) const {
-   if (path.IsEmpty())
+   if (!path)
       return nullptr;
 
    // Check if file is already interfaced                               
@@ -149,7 +149,7 @@ const A::File* FileSystem::GetFile(const Path& path) const {
 ///   @param path - the directory path to interface                           
 ///   @return the file interface or nullptr on failure                        
 const A::Folder* FileSystem::GetFolder(const Path& path) const {
-   if (path.IsEmpty())
+   if (!path)
       return nullptr;
 
    // Check if folder is already interfaced                             

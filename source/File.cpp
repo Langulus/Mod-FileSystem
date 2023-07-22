@@ -30,7 +30,7 @@ File::File(FileSystem* producer, const Descriptor& descriptor)
             mFilePath = trait.AsCast<Text>();
       }
    );
-   LANGULUS_ASSERT(!mFilePath.IsEmpty(), FileSystem,
+   LANGULUS_ASSERT(mFilePath, FileSystem,
       "Can't interface empty file path");
 
    mFilePath = mFilePath.Terminate();
@@ -48,7 +48,9 @@ File::File(FileSystem* producer, const Descriptor& descriptor)
       mExists = true;
       mByteCount = mFileInfo.filesize;
       mIsReadOnly = mFileInfo.readonly;
+      VERBOSE_VFS("Interfaces existing file: ", mFilePath);
    }
+   else VERBOSE_VFS("Interfaces non-existing file: ", mFilePath);
 
    // Check the file format, if available                               
    auto& candidates = RTTI::Database.ResolveFileExtension(mFileExtension);
