@@ -32,24 +32,24 @@ FileSystem::FileSystem(Runtime* runtime, const Descriptor&)
 
    // Get the working directory                                         
    mWorkingPath = PHYSFS_getBaseDir();
-   VERBOSE_VFS("Detected working path: ", mWorkingPath);
+   VERBOSE_VFS("Detected working path: `", mWorkingPath, '`');
 
    // Mount main read/write path                                        
-   mMainDataPath = mWorkingPath / "Data";
+   mMainDataPath = (mWorkingPath / "data").Terminate();
    if (0 == PHYSFS_mount(mMainDataPath.GetRaw(), nullptr, 0)) {
-      LANGULUS_ASSERT(
-         false, FileSystem, "Can't mount main data path",
-         " due to PHYSFS_mount error: ", GetLastError()
+      LANGULUS_ASSERT(false, FileSystem,
+         "Can't mount main data path `", mMainDataPath,
+         "` due to PHYSFS_mount error: ", GetLastError()
       );
    }
    VERBOSE_VFS("Mounted main data path: ", mMainDataPath);
 
    // Mount main write path                                             
-   mMainCachePath = mMainDataPath / "Cache";
+   mMainCachePath = (mMainDataPath / "cache").Terminate();
    if (0 == PHYSFS_mount(mMainCachePath.GetRaw(), nullptr, 0)) {
-      LANGULUS_ASSERT(
-         false, FileSystem, "Can't mount main cache path",
-         " due to PHYSFS_mount error: ", GetLastError()
+      LANGULUS_ASSERT(false, FileSystem,
+         "Can't mount main cache path `", mMainCachePath,
+         "` due to PHYSFS_mount error: ", GetLastError()
       );
    }
    VERBOSE_VFS("Mounted main cache directory: ", mMainCachePath);
@@ -66,13 +66,14 @@ FileSystem::FileSystem(Runtime* runtime, const Descriptor&)
 
    // Log supported file types                                          
    auto supported = PHYSFS_supportedArchiveTypes();
-   while (*(supported++)) {
+   while (*supported) {
       Logger::Info(Self(), "Supports `", 
          (*supported)->extension, "` files -- ", 
          (*supported)->description, " (",
          (*supported)->author, "; ",
          (*supported)->url, ")"
       );
+      ++supported;
    }
    VERBOSE_VFS("Initialized");
 }

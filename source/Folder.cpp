@@ -26,17 +26,17 @@ Folder::~Folder() {
 
 /// React on environmental change                                             
 void Folder::Refresh() {
-
+   TODO();
 }
 
 void Folder::Create(Verb&) {
-
+   TODO();
 }
 
 const A::File* Folder::GetFile(const Path&) const {
-
+   TODO();
 }
 
 const A::Folder* Folder::GetFolder(const Path&) const {
-
+   TODO();
 }
