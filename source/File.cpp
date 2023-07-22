@@ -61,6 +61,7 @@ File::File(FileSystem* producer, const Descriptor& descriptor)
       break;
    case 1:
       mFormat = dynamic_cast<DMeta>(*candidates.begin());
+      VERBOSE_VFS("File format detected: ", mFormat);
       if (!mFormat) {
          Logger::Warning(Self(),
             "File extension isn't associated with data: ", mFilePath);

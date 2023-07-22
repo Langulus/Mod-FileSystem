@@ -36,7 +36,7 @@ SCENARIO("File/folder creation", "[gui]") {
          WHEN("The file/folder is created via tokens") {
             auto producedFile = root.CreateUnitToken("File", "test.txt");
             auto producedFold = root.CreateUnitToken("Folder", "test folder");
-
+            
             // Update once                                              
             root.Update(Time::zero());
 
