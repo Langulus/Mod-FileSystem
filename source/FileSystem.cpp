@@ -30,39 +30,32 @@ FileSystem::FileSystem(Runtime* runtime, const Descriptor&)
       );
    }
 
-   // Get the working directory                                         
+   // Get the working and data directories                              
+   // This is the only place where full paths are used                  
+   //TODO erase working path after mounting, if LANGULUS(PARANOID)
    mWorkingPath = PHYSFS_getBaseDir();
+   mMainDataPath = "data";
    VERBOSE_VFS("Detected working path: `", mWorkingPath, '`');
 
    // Mount main read/write path                                        
-   mMainDataPath = (mWorkingPath / "data").Terminate();
-   if (0 == PHYSFS_mount(mMainDataPath.GetRaw(), nullptr, 0)) {
+   const auto dataio = (mWorkingPath / mMainDataPath).Terminate();
+   if (0 == PHYSFS_mount(dataio.GetRaw(), nullptr, 0)) {
       LANGULUS_ASSERT(false, FileSystem,
-         "Can't mount main data path `", mMainDataPath,
+         "Can't mount main data directory `", dataio,
          "` due to PHYSFS_mount error: ", GetLastError()
       );
    }
-   VERBOSE_VFS("Mounted main data path: ", mMainDataPath);
+   VERBOSE_VFS("Mounted main data directory: ", dataio);
 
-   // Mount main write path                                             
-   mMainCachePath = (mMainDataPath / "cache").Terminate();
-   if (0 == PHYSFS_mount(mMainCachePath.GetRaw(), nullptr, 0)) {
-      LANGULUS_ASSERT(false, FileSystem,
-         "Can't mount main cache path `", mMainCachePath,
-         "` due to PHYSFS_mount error: ", GetLastError()
-      );
-   }
-   VERBOSE_VFS("Mounted main cache directory: ", mMainCachePath);
-
-   if (0 == PHYSFS_setWriteDir(mMainCachePath.GetRaw())) {
-      Logger::Warning(Self(),
-         "Can't set write directory: ", mMainCachePath);
+   // Set main write path                                               
+   if (0 == PHYSFS_setWriteDir(dataio.GetRaw())) {
+      Logger::Warning(Self(), "Can't set write directory: ", dataio);
       Logger::Warning(Self(),
          "File writing will be disabled, due to PHYSFS_setWriteDir error: ",
          GetLastError()
       );
    }
-   else VERBOSE_VFS("Mounted main write directory: ", mMainCachePath);
+   else VERBOSE_VFS("Mounted main write directory: ", dataio);
 
    // Log supported file types                                          
    auto supported = PHYSFS_supportedArchiveTypes();
@@ -81,10 +74,11 @@ FileSystem::FileSystem(Runtime* runtime, const Descriptor&)
 /// Shutdown PhysFS                                                           
 FileSystem::~FileSystem() {
    // Release all files before shutting physfs down                     
-   mFileMap.Reset();
-   mFiles.Reset();
    mFolderMap.Reset();
+   mFileMap.Reset();
+
    mFolders.Reset();
+   mFiles.Reset();
 
    // Shut PhysFS down                                                  
    if (0 == PHYSFS_deinit()) {

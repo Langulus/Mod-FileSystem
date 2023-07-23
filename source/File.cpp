@@ -26,8 +26,8 @@ File::File(FileSystem* producer, const Descriptor& descriptor)
          mFilePath = text;
       },
       [&](const Trait& trait) {
-         if (trait.TraitIs<Traits::Name, Traits::File>())
-            mFilePath = trait.AsCast<Text>();
+         if (trait.TraitIs<Traits::Name, Traits::Path>())
+            mFilePath = trait.template AsCast<Text>();
       }
    );
    LANGULUS_ASSERT(mFilePath, FileSystem,
@@ -85,13 +85,19 @@ Any File::ReadAs(DMeta) const {
 }
 
 /// Create a new file reader                                                  
+///   @return a pointer to the file reader                                    
 Ptr<A::File::Reader> File::NewReader() {
-   TODO();
+   mReaders.Emplace(this);
+   return &mReaders.Last();
 }
 
 /// Create a new file writer                                                  
+///   @return a pointer to the file writer                                    
 Ptr<A::File::Writer> File::NewWriter(bool append) {
-   TODO();
+   LANGULUS_ASSERT(!mWriter, FileSystem,
+      "File `", mFilePath, "` is already opened for writing");
+   mWriter.emplace(this, append);
+   return &mWriter.value();
 }
 
 /// Rewrite the file, by serializing the verb's arguments                     

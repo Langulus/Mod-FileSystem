@@ -33,6 +33,9 @@ SCENARIO("File/folder creation", "[gui]") {
          // Load file system module                                     
          root.LoadMod("FileSystem");
 
+         REQUIRE(root.GetRuntime()->GetWorkingPath());
+         REQUIRE(root.GetRuntime()->GetDataPath());
+
          WHEN("The file/folder is created via tokens") {
             auto producedFile = root.CreateUnitToken("File", "test.txt");
             auto producedFold = root.CreateUnitToken("Folder", "test folder");
@@ -46,10 +49,13 @@ SCENARIO("File/folder creation", "[gui]") {
                REQUIRE(producedFile.GetCount() == 1);
                REQUIRE(producedFile.CastsTo<A::File>(1));
                REQUIRE(producedFile.IsSparse());
+               REQUIRE(producedFile.template As<A::File*>()->Exists());
+               REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
 
                REQUIRE(producedFold.GetCount() == 1);
                REQUIRE(producedFold.CastsTo<A::Folder>(1));
                REQUIRE(producedFold.IsSparse());
+               REQUIRE(producedFold.template As<A::Folder*>()->Exists());
             }
          }
 
@@ -66,10 +72,13 @@ SCENARIO("File/folder creation", "[gui]") {
                REQUIRE(producedFile.GetCount() == 1);
                REQUIRE(producedFile.CastsTo<A::File>(1));
                REQUIRE(producedFile.IsSparse());
+               REQUIRE(producedFile.template As<A::File*>()->Exists());
+               REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
 
                REQUIRE(producedFold.GetCount() == 1);
                REQUIRE(producedFold.CastsTo<A::Folder>(1));
                REQUIRE(producedFold.IsSparse());
+               REQUIRE(producedFold.template As<A::Folder*>()->Exists());
             }
          }
          

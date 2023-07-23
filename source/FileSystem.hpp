@@ -20,13 +20,6 @@ struct FileSystem final : A::FileSystem {
    LANGULUS_VERBS(Verbs::Create, Verbs::Select);
 
 private:
-   // Working directory path                                            
-   Path mWorkingPath;
-   // Main data directory, for both reading and writing                 
-   Path mMainDataPath;
-   // Main cache directory, primarily for writing temporary stuff       
-   Path mMainCachePath;
-
    // List of interfaced files                                          
    TFactoryUnique<File>          mFiles;
    // Files indexed by a lowercase relative path                        
