@@ -21,14 +21,14 @@ struct FileSystem final : A::FileSystem {
 
 private:
    // List of interfaced files                                          
-   TFactoryUnique<File>          mFiles;
+   TFactoryUnique<File> mFiles;
    // Files indexed by a lowercase relative path                        
-   TUnorderedMap<Path, File*>    mFileMap;
+   TUnorderedMap<Path, Ptr<A::File>> mFileMap;
 
    // List of interfaced folders                                        
-   TFactoryUnique<Folder>        mFolders;
+   TFactoryUnique<Folder> mFolders;
    // Folders indexed by a lowercase relative path                      
-   TUnorderedMap<Path, Folder*>  mFolderMap;
+   TUnorderedMap<Path, Ptr<A::Folder>> mFolderMap;
 
 public:
    FileSystem(Runtime*, const Descriptor&);
@@ -39,7 +39,7 @@ public:
    void Create(Verb&);
    void Select(Verb&);
 
-   NOD() const A::File*    GetFile(const Path&) const;
-   NOD() const A::Folder*  GetFolder(const Path&) const;
+   NOD() Ptr<A::File>    GetFile(const Path&);
+   NOD() Ptr<A::Folder>  GetFolder(const Path&);
 };
 

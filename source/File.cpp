@@ -14,10 +14,7 @@
 ///   @param descriptor - instructions for configuring the GUI                
 File::File(FileSystem* producer, const Descriptor& descriptor)
    : A::File {MetaOf<::File>(), descriptor}
-   // Notice provided descriptor isn't forwarded to factory, because    
-   // we always substitute it with a lowercase file path, so that files 
-   // are unique based only on that                                     
-   , ProducedFrom {producer, {}} {
+   , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 
    // Parse the descriptor for a filename                               

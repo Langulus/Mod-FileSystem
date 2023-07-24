@@ -114,7 +114,7 @@ void FileSystem::Select(Verb& verb) {
 /// an object, that can do those things                                       
 ///   @param path - the filename to interface                                 
 ///   @return the file interface or nullptr on failure                        
-const A::File* FileSystem::GetFile(const Path& path) const {
+Ptr<A::File> FileSystem::GetFile(const Path& path) {
    if (!path)
       return nullptr;
 
@@ -125,12 +125,11 @@ const A::File* FileSystem::GetFile(const Path& path) const {
       return mFileMap.GetValue(found);
 
    // Produce a new file interface                                      
-   Verbs::Create creator {Construct::From<File>(path)};
-   const_cast<TFactoryUnique<File>&>(mFiles).Create(creator);
+   Verbs::Create creator {Construct::From<File>(normalizedPath)};
+   mFiles.Create(creator);
    if (creator.IsDone()) {
-      auto filePtr = creator.GetOutput().As<File*>();
-      const_cast<TUnorderedMap<Path, File*>&>(mFileMap)
-         [normalizedPath] = filePtr;
+      auto filePtr = creator.GetOutput().As<A::File*>();
+      mFileMap[normalizedPath] = filePtr;
       return filePtr;
    }
 
@@ -142,7 +141,7 @@ const A::File* FileSystem::GetFile(const Path& path) const {
 /// creates an object, that can do those things                               
 ///   @param path - the directory path to interface                           
 ///   @return the file interface or nullptr on failure                        
-const A::Folder* FileSystem::GetFolder(const Path& path) const {
+Ptr<A::Folder> FileSystem::GetFolder(const Path& path) {
    if (!path)
       return nullptr;
 
@@ -153,12 +152,11 @@ const A::Folder* FileSystem::GetFolder(const Path& path) const {
       return mFolderMap.GetValue(found);
 
    // Produce a new folder interface                                    
-   Verbs::Create creator {Construct::From<Folder>(path)};
-   const_cast<TFactoryUnique<Folder>&>(mFolders).Create(creator);
+   Verbs::Create creator {Construct::From<Folder>(normalizedPath)};
+   mFolders.Create(creator);
    if (creator.IsDone()) {
-      auto folderPtr = creator.GetOutput().As<Folder*>();
-      const_cast<TUnorderedMap<Path, Folder*>&>(mFolderMap)
-         [normalizedPath] = folderPtr;
+      auto folderPtr = creator.GetOutput().As<A::Folder*>();
+      mFolderMap[normalizedPath] = folderPtr;
       return folderPtr;
    }
 
