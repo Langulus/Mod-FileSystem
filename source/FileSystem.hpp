@@ -23,12 +23,12 @@ private:
    // List of interfaced files                                          
    TFactoryUnique<File> mFiles;
    // Files indexed by a lowercase relative path                        
-   TUnorderedMap<Path, Ptr<A::File>> mFileMap;
+   TUnorderedMap<Path, Ref<A::File>> mFileMap;
 
    // List of interfaced folders                                        
    TFactoryUnique<Folder> mFolders;
    // Folders indexed by a lowercase relative path                      
-   TUnorderedMap<Path, Ptr<A::Folder>> mFolderMap;
+   TUnorderedMap<Path, Ref<A::Folder>> mFolderMap;
 
 public:
    FileSystem(Runtime*, const Descriptor&);
@@ -39,7 +39,7 @@ public:
    void Create(Verb&);
    void Select(Verb&);
 
-   NOD() Ptr<A::File>    GetFile(const Path&);
-   NOD() Ptr<A::Folder>  GetFolder(const Path&);
+   NOD() Ref<A::File>    GetFile(const Path&);
+   NOD() Ref<A::Folder>  GetFolder(const Path&);
 };
 
