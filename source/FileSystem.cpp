@@ -128,7 +128,7 @@ Ref<A::File> FileSystem::GetFile(const Path& path) {
    Verbs::Create creator {Construct::From<File>(normalizedPath)};
    mFiles.Create(creator);
    if (creator.IsDone()) {
-      auto filePtr = creator.GetOutput().As<A::File*>();
+      auto filePtr = creator->template As<A::File*>();
       mFileMap[normalizedPath] = filePtr;
       return filePtr;
    }
@@ -155,7 +155,7 @@ Ref<A::Folder> FileSystem::GetFolder(const Path& path) {
    Verbs::Create creator {Construct::From<Folder>(normalizedPath)};
    mFolders.Create(creator);
    if (creator.IsDone()) {
-      auto folderPtr = creator.GetOutput().As<A::Folder*>();
+      auto folderPtr = creator->template As<A::Folder*>();
       mFolderMap[normalizedPath] = folderPtr;
       return folderPtr;
    }
