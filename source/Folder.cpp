@@ -47,9 +47,7 @@ Folder::Folder(FileSystem* producer, const Descriptor& descriptor)
 }
 
 /// React on environmental change                                             
-void Folder::Refresh() {
-   TODO();
-}
+void Folder::Refresh() {}
 
 /// Create or delete files and subfolders under this folder                   
 void Folder::Create(Verb&) {

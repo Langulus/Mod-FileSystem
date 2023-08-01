@@ -161,7 +161,7 @@ File::Reader::~Reader() {
 ///   @param output - [out] the read bytes go here                            
 ///   @return the number of read bytes                                        
 Offset File::Reader::Read(Block& output) {
-   const auto count = PHYSFS_uint64(output.GetByteSize());
+   const auto count = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(mHandle, output.GetRaw(), count);
    VERBOSE_VFS("Reads ", ByteCount {result}, " from ", mFile->GetFilePath());
 
@@ -224,7 +224,7 @@ File::Writer::~Writer() {
 ///   @param input - the written bytes come from here                         
 ///   @return the number of written bytes                                     
 Offset File::Writer::Write(const Block& input) {
-   const auto count = PHYSFS_uint64(input.GetByteSize());
+   const auto count = PHYSFS_uint64(input.GetBytesize());
    const auto result = PHYSFS_writeBytes(mHandle, input.GetRaw(), count);
    VERBOSE_VFS("Writes ", ByteCount(result), " to ", mFile->GetFilePath());
 
