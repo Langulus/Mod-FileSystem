@@ -1,5 +1,3 @@
-project(LangulusModFileSystemTest)
-
 add_executable(LangulusModFileSystemTest
     Main.cpp
     TestFileSystem.cpp

@@ -1,14 +1,19 @@
 cmake_minimum_required(VERSION 3.24)
-project(LangulusModFileSystem)
+project(LangulusModFileSystem
+    VERSION         1.0.0
+    DESCRIPTION     "Langulus plug-in module for reading/writing files and folders"
+    HOMEPAGE_URL    https://langulus.com
+    LANGUAGES       CXX
+)
 
-# Configure PhysFS library, it will be statically built inside this module  
+# Configure PhysFS library, it will be statically built inside this module      
 fetch_external_module(
     PhysFS
     GIT_REPOSITORY  https://github.com/icculus/physfs.git
     GIT_TAG         0cd18b8 # main
 )
 
-# Build the module                                                          
+# Build the module                                                              
 add_library(LangulusModFileSystem SHARED
     source/FileSystem.cpp
     source/File.cpp
