@@ -33,6 +33,7 @@ SCENARIO("File/folder creation", "[gui]") {
          REQUIRE(root.GetRuntime()->GetWorkingPath());
          REQUIRE(root.GetRuntime()->GetDataPath());
 
+      #if LANGULUS_FEATURE(MANAGED_REFLECTION)
          WHEN("The file/folder is created via tokens") {
             auto producedFile = root.CreateUnitToken("File", "test.txt");
             auto producedFold = root.CreateUnitToken("Folder", "test folder");
@@ -55,6 +56,7 @@ SCENARIO("File/folder creation", "[gui]") {
                REQUIRE(producedFold.template As<A::Folder*>()->Exists());
             }
          }
+      #endif
 
          WHEN("The file/folder is created via abstractions") {
             auto producedFile = root.CreateUnit<A::File>("test.txt");

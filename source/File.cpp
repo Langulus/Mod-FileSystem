@@ -49,8 +49,9 @@ File::File(FileSystem* producer, const Descriptor& descriptor)
    }
    else VERBOSE_VFS("Interfaces non-existing file: ", mFilePath);
 
+#if LANGULUS_FEATURE(MANAGED_REFLECTION)
    // Check the file format, if available                               
-   auto& candidates = RTTI::Database.ResolveFileExtension(mFileExtension);
+   auto& candidates = RTTI::ResolveFileExtension(mFileExtension);
    switch(candidates.size()) {
    case 0:
       Logger::Warning(Self(),
@@ -72,6 +73,7 @@ File::File(FileSystem* producer, const Descriptor& descriptor)
       for (auto ext : candidates)
          Logger::Warning("  * ", ext);
    }
+#endif
 
    VERBOSE_VFS("Initialized");
 }

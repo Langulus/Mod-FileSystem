@@ -3,7 +3,6 @@ project(LangulusModFileSystem
     VERSION         1.0.0
     DESCRIPTION     "Langulus plug-in module for reading/writing files and folders"
     HOMEPAGE_URL    https://langulus.com
-    LANGUAGES       CXX
 )
 
 # Configure PhysFS library, it will be statically built inside this module      
