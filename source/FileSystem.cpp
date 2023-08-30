@@ -16,7 +16,7 @@ LANGULUS_DEFINE_MODULE(
 /// Module construction                                                       
 ///   @param runtime - the runtime that owns the module                       
 ///   @param descriptor - instructions for configuring the module             
-FileSystem::FileSystem(Runtime* runtime, const Descriptor&)
+FileSystem::FileSystem(Runtime* runtime, const Neat&)
    : A::FileSystem {MetaOf<::FileSystem>(), runtime}
    , mFiles {this}
    , mFolders {this} {
@@ -115,7 +115,7 @@ void FileSystem::Select(Verb& verb) {
 ///   @param path - the filename to interface                                 
 ///   @return the file interface or nullptr on failure                        
 Ref<A::File> FileSystem::GetFile(const Path& path) {
-   if (!path)
+   if (not path)
       return nullptr;
 
    // Check if file is already interfaced                               
@@ -142,7 +142,7 @@ Ref<A::File> FileSystem::GetFile(const Path& path) {
 ///   @param path - the directory path to interface                           
 ///   @return the file interface or nullptr on failure                        
 Ref<A::Folder> FileSystem::GetFolder(const Path& path) {
-   if (!path)
+   if (not path)
       return nullptr;
 
    // Check if folder is already interfaced                             

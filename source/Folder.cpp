@@ -12,21 +12,14 @@
 /// Folder constructor                                                        
 ///   @param producer - the folder producer                                   
 ///   @param descriptor - instructions for configuring the folder             
-Folder::Folder(FileSystem* producer, const Descriptor& descriptor)
+Folder::Folder(FileSystem* producer, const Neat& descriptor)
    : A::Folder {MetaOf<::Folder>(), descriptor}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 
-   // Parse the descriptor for a filename                               
-   descriptor.ForEachDeep(
-      [&](const Text& text) {
-         mFolderPath = text;
-      },
-      [&](const Trait& trait) {
-         if (trait.TraitIs<Traits::Name, Traits::Path>())
-            mFolderPath = trait.template AsCast<Text>();
-      }
-   );
+   // Get a path from the descriptor                                    
+   if (not descriptor.ExtractTrait<Traits::Name, Traits::Path>(mFolderPath))
+      descriptor.ExtractDataAs(mFolderPath);
    LANGULUS_ASSERT(mFolderPath, FileSystem,
       "Can't interface empty directory path");
 

@@ -73,7 +73,7 @@ private:
    std::optional<Writer> mWriter;
 
 public:
-   File(FileSystem*, const Descriptor&);
+   File(FileSystem*, const Neat&);
 
    void Refresh() {}
 

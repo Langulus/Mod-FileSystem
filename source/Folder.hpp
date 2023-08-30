@@ -27,7 +27,7 @@ private:
    PHYSFS_Stat mFolderInfo {};
 
 public:
-   Folder(FileSystem*, const Descriptor&);
+   Folder(FileSystem*, const Neat&);
 
    void Refresh();
    void Create(Verb&);

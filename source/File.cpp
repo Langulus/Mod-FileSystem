@@ -12,21 +12,14 @@
 /// File constructor                                                          
 ///   @param producer - the file producer                                     
 ///   @param descriptor - instructions for configuring the GUI                
-File::File(FileSystem* producer, const Descriptor& descriptor)
+File::File(FileSystem* producer, const Neat& descriptor)
    : A::File {MetaOf<::File>(), descriptor}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 
-   // Parse the descriptor for a filename                               
-   descriptor.ForEachDeep(
-      [&](const Text& text) {
-         mFilePath = text;
-      },
-      [&](const Trait& trait) {
-         if (trait.TraitIs<Traits::Name, Traits::Path>())
-            mFilePath = trait.template AsCast<Text>();
-      }
-   );
+   // Get a path from the descriptor                                    
+   if (not descriptor.ExtractTrait<Traits::Name, Traits::Path>(mFilePath))
+      descriptor.ExtractDataAs(mFilePath);
    LANGULUS_ASSERT(mFilePath, FileSystem,
       "Can't interface empty file path");
 
@@ -93,7 +86,7 @@ Ptr<A::File::Reader> File::NewReader() {
 /// Create a new file writer                                                  
 ///   @return a pointer to the file writer                                    
 Ptr<A::File::Writer> File::NewWriter(bool append) {
-   LANGULUS_ASSERT(!mWriter, FileSystem,
+   LANGULUS_ASSERT(not mWriter, FileSystem,
       "File `", mFilePath, "` is already opened for writing");
    mWriter.emplace(this, append);
    return &mWriter.value();
@@ -151,7 +144,7 @@ File::Reader::Reader(File* file)
 
 /// File reader destructor                                                    
 File::Reader::~Reader() {
-   if (!mHandle)
+   if (not mHandle)
       return;
 
    // Close the file handle                                             
@@ -194,7 +187,7 @@ File::Writer::Writer(File* file, bool append)
    : A::File::Writer {file, append} {
    // Check if file is read-only                                        
    LANGULUS_ASSERT(
-      !mFile->Exists() || !mFile->IsReadOnly(), FileSystem,
+      not mFile->Exists() or not mFile->IsReadOnly(), FileSystem,
       "Can't open read-only `", mFile->GetFilePath(), "` for writing/appending"
    );
 
@@ -214,7 +207,7 @@ File::Writer::Writer(File* file, bool append)
 
 /// File writer destructor                                                    
 File::Writer::~Writer() {
-   if (!mHandle)
+   if (not mHandle)
       return;
 
    // Close the file handle                                             
