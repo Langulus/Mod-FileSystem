@@ -28,7 +28,7 @@ target_include_directories(LangulusModFileSystem
     PRIVATE     ${PhysFS_SOURCE_DIR}
 )
 
-if(LANGULUS_ENABLE_TESTING)
+if(LANGULUS_TESTING)
     enable_testing()
 	add_subdirectory(test)
 endif()
