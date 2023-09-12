@@ -40,7 +40,7 @@ FileSystem::FileSystem(Runtime* runtime, const Neat&)
    // Mount main read/write path                                        
    const auto dataio = (mWorkingPath / mMainDataPath).Terminate();
    if (0 == PHYSFS_mount(dataio.GetRaw(), nullptr, 0)) {
-      LANGULUS_ASSERT(false, FileSystem,
+      LANGULUS_OOPS(FileSystem,
          "Can't mount main data directory `", dataio,
          "` due to PHYSFS_mount error: ", GetLastError()
       );
