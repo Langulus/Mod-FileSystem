@@ -36,7 +36,7 @@ File::File(FileSystem* producer, const Neat& descriptor)
       );
 
       mExists = true;
-      mByteCount = mFileInfo.filesize;
+      mByteCount = static_cast<Size>(mFileInfo.filesize);
       mIsReadOnly = mFileInfo.readonly;
       VERBOSE_VFS("Interfaces existing file: ", mFilePath);
    }
