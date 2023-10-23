@@ -38,7 +38,9 @@ struct File final : A::File, ProducedFrom<FileSystem> {
 
    public:
       Reader(File*);
+      Reader(Abandoned<Reader>&&);
       ~Reader();
+
       Offset Read(Block&);
    };
 
@@ -52,7 +54,9 @@ struct File final : A::File, ProducedFrom<FileSystem> {
 
    public:
       Writer(File*, bool append);
+      Writer(Abandoned<Writer>&&);
       ~Writer();
+
       Offset Write(const Block&);
    };
 
