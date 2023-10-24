@@ -74,6 +74,7 @@ File::File(FileSystem* producer, const Neat& descriptor)
 /// Read a file and deserialize it as the required type                       
 Any File::ReadAs(DMeta) const {
    TODO();
+   return {};
 }
 
 /// Create a new file reader                                                  
