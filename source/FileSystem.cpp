@@ -120,16 +120,16 @@ Ref<A::File> FileSystem::GetFile(const Path& path) {
 
    // Check if file is already interfaced                               
    const auto normalizedPath = path.Lowercase();
-   auto found = mFileMap.Find(normalizedPath);
+   auto found = mFileMap.FindIt(normalizedPath);
    if (found)
-      return mFileMap.GetValue(found);
+      return found->mValue;
 
    // Produce a new file interface                                      
    Verbs::Create creator {Construct::From<File>(normalizedPath)};
    mFiles.Create(creator);
    if (creator.IsDone()) {
       auto filePtr = creator->template As<A::File*>();
-      mFileMap[normalizedPath] = filePtr;
+      mFileMap.Insert(normalizedPath, filePtr);
       return filePtr;
    }
 
@@ -147,16 +147,16 @@ Ref<A::Folder> FileSystem::GetFolder(const Path& path) {
 
    // Check if folder is already interfaced                             
    const auto normalizedPath = path.Lowercase();
-   auto found = mFolderMap.Find(normalizedPath);
+   auto found = mFolderMap.FindIt(normalizedPath);
    if (found)
-      return mFolderMap.GetValue(found);
+      return found->mValue;
 
    // Produce a new folder interface                                    
    Verbs::Create creator {Construct::From<Folder>(normalizedPath)};
    mFolders.Create(creator);
    if (creator.IsDone()) {
       auto folderPtr = creator->template As<A::Folder*>();
-      mFolderMap[normalizedPath] = folderPtr;
+      mFolderMap.Insert(normalizedPath, folderPtr);
       return folderPtr;
    }
 
