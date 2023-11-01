@@ -34,7 +34,7 @@ public:
    FileSystem(Runtime*, const Neat&);
    ~FileSystem();
 
-   void Update(Time);
+   bool Update(Time);
 
    void Create(Verb&);
    void Select(Verb&);

@@ -1,7 +1,10 @@
-add_executable(LangulusModFileSystemTest
-    Main.cpp
-    TestFileSystem.cpp
+file(GLOB_RECURSE
+	LANGULUS_MOD_FILESYSTEM_TEST_SOURCES 
+	LIST_DIRECTORIES FALSE CONFIGURE_DEPENDS
+	*.cpp *.hpp
 )
+
+add_executable(LangulusModFileSystemTest ${LANGULUS_MOD_FILESYSTEM_TEST_SOURCES})
 
 target_link_libraries(LangulusModFileSystemTest
     PRIVATE		Langulus

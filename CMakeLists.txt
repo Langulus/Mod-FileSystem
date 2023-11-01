@@ -12,12 +12,14 @@ fetch_external_module(
     GIT_TAG         0cd18b8 # main
 )
 
-# Build the module                                                              
-add_library(LangulusModFileSystem SHARED
-    source/FileSystem.cpp
-    source/File.cpp
-    source/Folder.cpp
+file(GLOB_RECURSE
+	LANGULUS_MOD_FILESYSTEM_SOURCES 
+	LIST_DIRECTORIES FALSE CONFIGURE_DEPENDS
+	source/*.cpp source/*.hpp
 )
+
+# Build the module                                                              
+add_library(LangulusModFileSystem SHARED ${LANGULUS_MOD_FILESYSTEM_SOURCES})
 
 target_link_libraries(LangulusModFileSystem 
     PRIVATE     Langulus

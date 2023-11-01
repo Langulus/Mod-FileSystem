@@ -91,8 +91,8 @@ FileSystem::~FileSystem() {
 
 /// Module update routine                                                     
 ///   @param dt - time from last update                                       
-void FileSystem::Update(Time) {
-
+bool FileSystem::Update(Time) {
+   return true;
 }
 
 /// Create/Destroy file and folder interfaces                                 
