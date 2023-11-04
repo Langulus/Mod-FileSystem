@@ -123,7 +123,7 @@ void File::Select(Verb& verb) {
 /// Attempt to interpret the file contents at the current position as some    
 /// data type                                                                 
 ///   @param verb - the interpret verb                                        
-void File::Interpret(Verb& verb) {
+void File::Interpret(Verb&) {
    TODO();
 }
 
