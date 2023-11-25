@@ -48,14 +48,14 @@ File::File(FileSystem* producer, const Neat& descriptor)
    switch(candidates.size()) {
    case 0:
       Logger::Warning(Self(),
-         "Unknown file extension: ", mFilePath);
+         "Unknown file extension: `", mFilePath, '`');
       break;
    case 1:
       mFormat = dynamic_cast<DMeta>(*candidates.begin());
       VERBOSE_VFS("File format detected: ", mFormat);
       if (!mFormat) {
          Logger::Warning(Self(),
-            "File extension isn't associated with data: ", mFilePath);
+            "File extension isn't associated with data: `", mFilePath, '`');
       }
       break;
    default:
@@ -165,7 +165,7 @@ File::Reader::~Reader() {
 Offset File::Reader::Read(Block& output) {
    const auto count = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
-   VERBOSE_VFS("Reads ", ByteCount {result}, " from ", mFile->GetFilePath());
+   VERBOSE_VFS("Reads ", ByteCount {result}, " from `", mFile->GetFilePath(), '`');
 
    LANGULUS_ASSERT(-1 != result, FileSystem,
       "Complete failure in PHYSFS_readBytes: ", GetLastError());
@@ -234,7 +234,7 @@ File::Writer::~Writer() {
 Offset File::Writer::Write(const Block& input) {
    const auto count = PHYSFS_uint64(input.GetBytesize());
    const auto result = PHYSFS_writeBytes(mHandle.Get(), input.GetRaw(), count);
-   VERBOSE_VFS("Writes ", ByteCount(result), " to ", mFile->GetFilePath());
+   VERBOSE_VFS("Writes ", ByteCount(result), " to `", mFile->GetFilePath(), '`');
 
    LANGULUS_ASSERT(PHYSFS_uint64(result) == count, FileSystem,
       "Error in PHYSFS_writeBytes: ", GetLastError());

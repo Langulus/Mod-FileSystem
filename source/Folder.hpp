@@ -33,6 +33,6 @@ public:
    void Create(Verb&);
    void Select(Verb&);
 
-   NOD() const A::File* GetFile(const Path&) const;
-   NOD() const A::Folder* GetFolder(const Path&) const;
+   NOD() Ref<A::File> GetFile(const Path&) const;
+   NOD() Ref<A::Folder> GetFolder(const Path&) const;
 };

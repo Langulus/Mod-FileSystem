@@ -20,8 +20,8 @@ struct Folder;
 
 LANGULUS_EXCEPTION(FileSystem);
 
-#define VERBOSE_VFS(...) Logger::Verbose(Self(), __VA_ARGS__)
-#define VERBOSE_VFS_TAB(...) const auto tab = Logger::Verbose(Self(), __VA_ARGS__, Logger::Tabs {})
+#define VERBOSE_VFS(...)      //Logger::Verbose(Self(), __VA_ARGS__)
+#define VERBOSE_VFS_TAB(...)  //const auto tab = Logger::Verbose(Self(), __VA_ARGS__, Logger::Tabs {})
 
 /// Include PhysFS                                                            
 #include <src/physfs.h>
@@ -31,7 +31,7 @@ NOD() LANGULUS(INLINED)
 Token GetLastError() noexcept {
    const auto errorCode = PHYSFS_getLastErrorCode();
    const auto readableError = PHYSFS_getErrorByCode(errorCode);
-   if (!readableError)
+   if (not readableError)
       return "<undefined PhysFS error code>";
    return readableError;
 }
