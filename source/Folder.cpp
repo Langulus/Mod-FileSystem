@@ -34,7 +34,9 @@ Folder::Folder(FileSystem* producer, const Neat& descriptor)
       mIsReadOnly = mFolderInfo.readonly;
       VERBOSE_VFS("Interfaces existing directory: ", mFolderPath);
    }
-   else VERBOSE_VFS("Interfaces non-existing directory: ", mFolderPath);
+   else {
+      VERBOSE_VFS("Interfaces non-existing directory: ", mFolderPath);
+   }
 
    VERBOSE_VFS("Initialized");
 }

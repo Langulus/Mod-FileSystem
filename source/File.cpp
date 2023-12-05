@@ -40,7 +40,9 @@ File::File(FileSystem* producer, const Neat& descriptor)
       mIsReadOnly = mFileInfo.readonly;
       VERBOSE_VFS("Interfaces existing file: ", mFilePath);
    }
-   else VERBOSE_VFS("Interfaces non-existing file: ", mFilePath);
+   else {
+      VERBOSE_VFS("Interfaces non-existing file: ", mFilePath);
+   }
 
 #if LANGULUS_FEATURE(MANAGED_REFLECTION)
    // Check the file format, if available                               
