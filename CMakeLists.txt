@@ -6,6 +6,11 @@ project(LangulusModFileSystem
 )
 
 # Configure PhysFS library, it will be statically built inside this module      
+set(PHYSFS_BUILD_TEST FALSE CACHE BOOL "Don't allow tests to be built" FORCE)
+set(PHYSFS_DISABLE_INSTALL TRUE CACHE BOOL "Don't allow install" FORCE)
+set(PHYSFS_BUILD_DOCS FALSE CACHE BOOL "Don't allow building docs" FORCE)
+set(PHYSFS_BUILD_SHARED FALSE CACHE BOOL "Don't allow building shared library" FORCE)
+
 fetch_external_module(
     PhysFS
     GIT_REPOSITORY  https://github.com/icculus/physfs.git
