@@ -53,9 +53,9 @@ File::File(FileSystem* producer, const Neat& descriptor)
          "Unknown file extension: `", mFilePath, '`');
       break;
    case 1:
-      mFormat = dynamic_cast<DMeta>(*candidates.begin());
+      mFormat = *candidates.begin();
       VERBOSE_VFS("File format detected: ", mFormat);
-      if (!mFormat) {
+      if (not mFormat) {
          Logger::Warning(Self(),
             "File extension isn't associated with data: `", mFilePath, '`');
       }
