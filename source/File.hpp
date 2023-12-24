@@ -41,7 +41,7 @@ struct File final : A::File, ProducedFrom<FileSystem> {
       Reader(Abandoned<Reader>&&);
       ~Reader();
 
-      Offset Read(Block&);
+      Offset Read(Any&);
    };
 
    /// File writer stream                                                     
@@ -57,7 +57,7 @@ struct File final : A::File, ProducedFrom<FileSystem> {
       Writer(Abandoned<Writer>&&);
       ~Writer();
 
-      Offset Write(const Block&);
+      Offset Write(const Any&);
    };
 
 private:

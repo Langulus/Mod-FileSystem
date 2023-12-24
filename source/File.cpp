@@ -82,8 +82,7 @@ Any File::ReadAs(DMeta) const {
 /// Create a new file reader                                                  
 ///   @return a pointer to the file reader                                    
 Ptr<A::File::Reader> File::NewReader() {
-   mReaders.Emplace(this);
-   return &mReaders.Last();
+   return &mReaders.Emplace(IndexBack, this);
 }
 
 /// Create a new file writer                                                  
@@ -91,8 +90,7 @@ Ptr<A::File::Reader> File::NewReader() {
 Ptr<A::File::Writer> File::NewWriter(bool append) {
    LANGULUS_ASSERT(not mWriter, FileSystem,
       "File `", mFilePath, "` is already opened for writing");
-   mWriter.emplace(this, append);
-   return &mWriter.value();
+   return &mWriter.emplace(this, append);
 }
 
 /// Rewrite the file, by serializing the verb's arguments                     
@@ -164,7 +162,7 @@ File::Reader::~Reader() {
 /// Read bytes into a preallocated block                                      
 ///   @param output - [out] the read bytes go here                            
 ///   @return the number of read bytes                                        
-Offset File::Reader::Read(Block& output) {
+Offset File::Reader::Read(Any& output) {
    const auto count = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
    VERBOSE_VFS("Reads ", ByteCount {result}, " from `", mFile->GetFilePath(), '`');
@@ -233,7 +231,7 @@ File::Writer::~Writer() {
 /// Write bytes to a preallocated block                                       
 ///   @param input - the written bytes come from here                         
 ///   @return the number of written bytes                                     
-Offset File::Writer::Write(const Block& input) {
+Offset File::Writer::Write(const Any& input) {
    const auto count = PHYSFS_uint64(input.GetBytesize());
    const auto result = PHYSFS_writeBytes(mHandle.Get(), input.GetRaw(), count);
    VERBOSE_VFS("Writes ", ByteCount(result), " to `", mFile->GetFilePath(), '`');
