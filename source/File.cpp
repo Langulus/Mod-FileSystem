@@ -164,8 +164,8 @@ File::Reader::~Reader() {
 ///   @return the number of read bytes                                        
 Offset File::Reader::Read(Any& output) {
    const auto count = PHYSFS_uint64(output.GetBytesize());
-   const auto result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
-   VERBOSE_VFS("Reads ", ByteCount {result}, " from `", mFile->GetFilePath(), '`');
+   const Size result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
+   VERBOSE_VFS("Reads ", result, " from `", mFile->GetFilePath(), '`');
 
    LANGULUS_ASSERT(-1 != result, FileSystem,
       "Complete failure in PHYSFS_readBytes: ", GetLastError());
@@ -177,7 +177,7 @@ Offset File::Reader::Read(Any& output) {
    return r;
 }
 
-Debug File::Reader::Self() const {
+Text File::Reader::Self() const {
    return mFile ? mFile->Self() : "<invalid file reader>";
 }
 
@@ -233,8 +233,8 @@ File::Writer::~Writer() {
 ///   @return the number of written bytes                                     
 Offset File::Writer::Write(const Any& input) {
    const auto count = PHYSFS_uint64(input.GetBytesize());
-   const auto result = PHYSFS_writeBytes(mHandle.Get(), input.GetRaw(), count);
-   VERBOSE_VFS("Writes ", ByteCount(result), " to `", mFile->GetFilePath(), '`');
+   const Size result = PHYSFS_writeBytes(mHandle.Get(), input.GetRaw(), count);
+   VERBOSE_VFS("Writes ", result, " to `", mFile->GetFilePath(), '`');
 
    LANGULUS_ASSERT(PHYSFS_uint64(result) == count, FileSystem,
       "Error in PHYSFS_writeBytes: ", GetLastError());
@@ -244,6 +244,6 @@ Offset File::Writer::Write(const Any& input) {
    return r;
 }
 
-Debug File::Writer::Self() const {
+Text File::Writer::Self() const {
    return mFile ? mFile->Self() : "<invalid file writer>";
 }
