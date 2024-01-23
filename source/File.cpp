@@ -164,15 +164,15 @@ File::Reader::~Reader() {
 ///   @return the number of read bytes                                        
 Offset File::Reader::Read(Any& output) {
    const auto count = PHYSFS_uint64(output.GetBytesize());
-   const Size result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
-   VERBOSE_VFS("Reads ", result, " from `", mFile->GetFilePath(), '`');
+   const auto result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
+   const auto r = static_cast<Offset>(result);
+   VERBOSE_VFS("Reads ", Size (result), " from `", mFile->GetFilePath(), '`');
 
    LANGULUS_ASSERT(-1 != result, FileSystem,
       "Complete failure in PHYSFS_readBytes: ", GetLastError());
-   LANGULUS_ASSERT(PHYSFS_uint64(result) == count, FileSystem,
+   LANGULUS_ASSERT(r == count, FileSystem,
       "Error in PHYSFS_readBytes: ", GetLastError());
 
-   const auto r = static_cast<Offset>(result);
    mProgress += r;
    return r;
 }

@@ -124,7 +124,7 @@ Ref<A::File> FileSystem::GetFile(const Path& path) {
    const auto normalizedPath = path.Lowercase();
    auto found = mFileMap.FindIt(normalizedPath);
    if (found)
-      return found->mValue;
+      return *found.mValue;
 
    // Produce a new file interface                                      
    Verbs::Create creator {Construct::From<File>(normalizedPath)};
@@ -151,7 +151,7 @@ Ref<A::Folder> FileSystem::GetFolder(const Path& path) {
    const auto normalizedPath = path.Lowercase();
    auto found = mFolderMap.FindIt(normalizedPath);
    if (found)
-      return found->mValue;
+      return *found.mValue;
 
    // Produce a new folder interface                                    
    Verbs::Create creator {Construct::From<Folder>(normalizedPath)};
