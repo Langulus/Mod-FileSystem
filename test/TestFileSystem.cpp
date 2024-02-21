@@ -33,6 +33,26 @@ SCENARIO("File/folder creation", "[gui]") {
          REQUIRE(root.GetRuntime()->GetWorkingPath());
          REQUIRE(root.GetRuntime()->GetDataPath());
 
+         WHEN("The file/folder is created via abstractions") {
+            auto producedFile = root.CreateUnit<A::File>("test.txt");
+            auto producedFold = root.CreateUnit<A::Folder>("test folder");
+
+            // Update once                                              
+            root.Update(Time::zero());
+            root.DumpHierarchy();
+
+            REQUIRE(producedFile.GetCount() == 1);
+            REQUIRE(producedFile.CastsTo<A::File>(1));
+            REQUIRE(producedFile.IsSparse());
+            REQUIRE(producedFile.template As<A::File*>()->Exists());
+            REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
+
+            REQUIRE(producedFold.GetCount() == 1);
+            REQUIRE(producedFold.CastsTo<A::Folder>(1));
+            REQUIRE(producedFold.IsSparse());
+            REQUIRE(producedFold.template As<A::Folder*>()->Exists());
+         }
+         
       #if LANGULUS_FEATURE(MANAGED_REFLECTION)
          WHEN("The file/folder is created via tokens") {
             auto producedFile = root.CreateUnitToken("File", "test.txt");
@@ -40,46 +60,20 @@ SCENARIO("File/folder creation", "[gui]") {
             
             // Update once                                              
             root.Update(Time::zero());
+            root.DumpHierarchy();
 
-            THEN("Various traits change") {
-               root.DumpHierarchy();
+            REQUIRE(producedFile.GetCount() == 1);
+            REQUIRE(producedFile.CastsTo<A::File>(1));
+            REQUIRE(producedFile.IsSparse());
+            REQUIRE(producedFile.template As<A::File*>()->Exists());
+            REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
 
-               REQUIRE(producedFile.GetCount() == 1);
-               REQUIRE(producedFile.CastsTo<A::File>(1));
-               REQUIRE(producedFile.IsSparse());
-               REQUIRE(producedFile.template As<A::File*>()->Exists());
-               REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
-
-               REQUIRE(producedFold.GetCount() == 1);
-               REQUIRE(producedFold.CastsTo<A::Folder>(1));
-               REQUIRE(producedFold.IsSparse());
-               REQUIRE(producedFold.template As<A::Folder*>()->Exists());
-            }
+            REQUIRE(producedFold.GetCount() == 1);
+            REQUIRE(producedFold.CastsTo<A::Folder>(1));
+            REQUIRE(producedFold.IsSparse());
+            REQUIRE(producedFold.template As<A::Folder*>()->Exists());
          }
       #endif
-
-         WHEN("The file/folder is created via abstractions") {
-            auto producedFile = root.CreateUnit<A::File>("test.txt");
-            auto producedFold = root.CreateUnit<A::Folder>("test folder");
-
-            // Update once                                              
-            root.Update(Time::zero());
-
-            THEN("Various traits change") {
-               root.DumpHierarchy();
-
-               REQUIRE(producedFile.GetCount() == 1);
-               REQUIRE(producedFile.CastsTo<A::File>(1));
-               REQUIRE(producedFile.IsSparse());
-               REQUIRE(producedFile.template As<A::File*>()->Exists());
-               REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
-
-               REQUIRE(producedFold.GetCount() == 1);
-               REQUIRE(producedFold.CastsTo<A::Folder>(1));
-               REQUIRE(producedFold.IsSparse());
-               REQUIRE(producedFold.template As<A::Folder*>()->Exists());
-            }
-         }
 
          // Check for memory leaks after each cycle                     
          REQUIRE(memoryState.Assert());
