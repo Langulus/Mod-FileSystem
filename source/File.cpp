@@ -36,7 +36,7 @@ File::File(FileSystem* producer, const Neat& descriptor)
       );
 
       mExists = true;
-      mByteCount = static_cast<Size::Type>(mFileInfo.filesize);
+      mByteCount = static_cast<Offset>(mFileInfo.filesize);
       mIsReadOnly = mFileInfo.readonly;
       VERBOSE_VFS("Interfaces existing file: ", mFilePath);
    }
@@ -166,7 +166,7 @@ Offset File::Reader::Read(Any& output) {
    const auto count = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
    const auto r = static_cast<Offset>(result);
-   VERBOSE_VFS("Reads ", Size (result), " from `", mFile->GetFilePath(), '`');
+   VERBOSE_VFS("Reads ", Size {r}, " from `", mFile->GetFilePath(), '`');
 
    LANGULUS_ASSERT(-1 != result, FileSystem,
       "Complete failure in PHYSFS_readBytes: ", GetLastError());
@@ -233,7 +233,7 @@ File::Writer::~Writer() {
 ///   @return the number of written bytes                                     
 Offset File::Writer::Write(const Any& input) {
    const auto count = PHYSFS_uint64(input.GetBytesize());
-   const Size result = static_cast<Size::Type>(
+   const auto result = static_cast<Offset>(
       PHYSFS_writeBytes(mHandle.Get(), input.GetRaw(), count));
 
    VERBOSE_VFS("Writes ", result, " to `", mFile->GetFilePath(), '`');
