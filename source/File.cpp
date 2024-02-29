@@ -36,7 +36,7 @@ File::File(FileSystem* producer, const Neat& descriptor)
       );
 
       mExists = true;
-      mByteCount = static_cast<Size>(mFileInfo.filesize);
+      mByteCount = static_cast<Size::Type>(mFileInfo.filesize);
       mIsReadOnly = mFileInfo.readonly;
       VERBOSE_VFS("Interfaces existing file: ", mFilePath);
    }
@@ -212,8 +212,8 @@ File::Writer::Writer(File* file, bool append)
    }
 }
 
-/// Explicit file abandon-construction                                        
-///   @param file - the file interface                                        
+/// Writer abandon-construction                                               
+///   @param other - the writer                                               
 File::Writer::Writer(Abandoned<Writer>&& other)
    : A::File::Writer {*other}
    , mHandle {Abandon(other->mHandle)} { }
@@ -233,9 +233,10 @@ File::Writer::~Writer() {
 ///   @return the number of written bytes                                     
 Offset File::Writer::Write(const Any& input) {
    const auto count = PHYSFS_uint64(input.GetBytesize());
-   const Size result = PHYSFS_writeBytes(mHandle.Get(), input.GetRaw(), count);
-   VERBOSE_VFS("Writes ", result, " to `", mFile->GetFilePath(), '`');
+   const Size result = static_cast<Size::Type>(
+      PHYSFS_writeBytes(mHandle.Get(), input.GetRaw(), count));
 
+   VERBOSE_VFS("Writes ", result, " to `", mFile->GetFilePath(), '`');
    LANGULUS_ASSERT(PHYSFS_uint64(result) == count, FileSystem,
       "Error in PHYSFS_writeBytes: ", GetLastError());
 
