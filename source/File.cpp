@@ -81,13 +81,13 @@ Any File::ReadAs(DMeta) const {
 
 /// Create a new file reader                                                  
 ///   @return a pointer to the file reader                                    
-Ptr<A::File::Reader> File::NewReader() {
+Ref<A::File::Reader> File::NewReader() {
    return &mReaders.Emplace(IndexBack, this);
 }
 
 /// Create a new file writer                                                  
 ///   @return a pointer to the file writer                                    
-Ptr<A::File::Writer> File::NewWriter(bool append) {
+Ref<A::File::Writer> File::NewWriter(bool append) {
    LANGULUS_ASSERT(not mWriter, FileSystem,
       "File `", mFilePath, "` is already opened for writing");
    return &mWriter.emplace(this, append);

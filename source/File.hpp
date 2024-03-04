@@ -88,6 +88,6 @@ public:
 
    NOD() Any ReadAs(DMeta) const;
 
-   NOD() Ptr<A::File::Reader> NewReader();
-   NOD() Ptr<A::File::Writer> NewWriter(bool append);
+   NOD() Ref<A::File::Reader> NewReader();
+   NOD() Ref<A::File::Writer> NewWriter(bool append);
 };
