@@ -57,13 +57,13 @@ void Folder::Select(Verb&) {
 /// Get a file interface, from a path that resides in this folder             
 ///   @param filename - path relative to this folder                          
 ///   @return the file interface                                              
-Ref<A::File> Folder::GetFile(const Path& filename) const {
+Ref<A::File> Folder::RelativeFile(const Path& filename) const {
    return GetProducer()->GetFile(mFolderPath / filename);
 }
 
 /// Get a subfolder interface, from a path that resides in this folder        
 ///   @param dirname - path relative to this folder                           
-///   @return the file interface                                              
-Ref<A::Folder> Folder::GetFolder(const Path& dirname) const {
+///   @return the folder interface                                            
+Ref<A::Folder> Folder::RelativeFolder(const Path& dirname) const {
    return GetProducer()->GetFolder(mFolderPath / dirname);
 }

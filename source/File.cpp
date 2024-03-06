@@ -93,6 +93,20 @@ Ref<A::File::Writer> File::NewWriter(bool append) const {
    return &mWriter.emplace(const_cast<File*>(this), append);
 }
 
+/// Get a file interface with filename, relative to this file                 
+///   @param filename - path relative to this file's path                     
+///   @return the file interface                                              
+Ref<A::File> File::RelativeFile(const Path& filename) const {
+   return GetProducer()->GetFile(Path {mParentDirectory} / filename);
+}
+
+/// Get a subfolder interface with filename, relative to this file            
+///   @param dirname - path relative to this file's path                      
+///   @return the folder interface                                            
+Ref<A::Folder> File::RelativeFolder(const Path& dirname) const {
+   return GetProducer()->GetFolder(Path {mParentDirectory} / dirname);
+}
+
 /// Rewrite the file, by serializing the verb's arguments                     
 ///   @param verb - the associate verb                                        
 void File::Associate(Verb& verb) {

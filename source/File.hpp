@@ -90,4 +90,7 @@ public:
 
    NOD() Ref<A::File::Reader> NewReader() const;
    NOD() Ref<A::File::Writer> NewWriter(bool append) const;
+
+   NOD() Ref<A::File>   RelativeFile(const Path&) const;
+   NOD() Ref<A::Folder> RelativeFolder(const Path&) const;
 };
