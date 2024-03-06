@@ -72,9 +72,9 @@ private:
    PHYSFS_Stat mFileInfo {};
 
    // Active file reader streams                                        
-   TAny<Reader> mReaders;
+   mutable TAny<Reader> mReaders;
    // Active file writer stream (there can be only one)                 
-   std::optional<Writer> mWriter;
+   mutable std::optional<Writer> mWriter;
 
 public:
    File(FileSystem*, const Neat&);
@@ -88,6 +88,6 @@ public:
 
    NOD() Any ReadAs(DMeta) const;
 
-   NOD() Ref<A::File::Reader> NewReader();
-   NOD() Ref<A::File::Writer> NewWriter(bool append);
+   NOD() Ref<A::File::Reader> NewReader() const;
+   NOD() Ref<A::File::Writer> NewWriter(bool append) const;
 };

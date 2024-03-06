@@ -81,16 +81,16 @@ Any File::ReadAs(DMeta) const {
 
 /// Create a new file reader                                                  
 ///   @return a pointer to the file reader                                    
-Ref<A::File::Reader> File::NewReader() {
-   return &mReaders.Emplace(IndexBack, this);
+Ref<A::File::Reader> File::NewReader() const {
+   return &mReaders.Emplace(IndexBack, const_cast<File*>(this));
 }
 
 /// Create a new file writer                                                  
 ///   @return a pointer to the file writer                                    
-Ref<A::File::Writer> File::NewWriter(bool append) {
+Ref<A::File::Writer> File::NewWriter(bool append) const {
    LANGULUS_ASSERT(not mWriter, FileSystem,
       "File `", mFilePath, "` is already opened for writing");
-   return &mWriter.emplace(this, append);
+   return &mWriter.emplace(const_cast<File*>(this), append);
 }
 
 /// Rewrite the file, by serializing the verb's arguments                     
