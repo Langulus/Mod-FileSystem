@@ -38,6 +38,7 @@ Folder::Folder(FileSystem* producer, const Neat& descriptor)
       VERBOSE_VFS("Interfaces non-existing directory: ", mFolderPath);
    }
 
+   Couple(descriptor);
    VERBOSE_VFS("Initialized");
 }
 

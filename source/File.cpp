@@ -70,6 +70,7 @@ File::File(FileSystem* producer, const Neat& descriptor)
    }
 #endif
 
+   Couple(descriptor);
    VERBOSE_VFS("Initialized");
 }
 
@@ -82,7 +83,8 @@ Any File::ReadAs(DMeta) const {
 /// Create a new file reader                                                  
 ///   @return a pointer to the file reader                                    
 Ref<A::File::Reader> File::NewReader() const {
-   return &mReaders.Emplace(IndexBack, const_cast<File*>(this));
+   Reader newReader {const_cast<File*>(this)};
+   return &mReaders.Emplace(IndexBack, Abandon(newReader));
 }
 
 /// Create a new file writer                                                  
@@ -90,7 +92,8 @@ Ref<A::File::Reader> File::NewReader() const {
 Ref<A::File::Writer> File::NewWriter(bool append) const {
    LANGULUS_ASSERT(not mWriter, FileSystem,
       "File `", mFilePath, "` is already opened for writing");
-   return &mWriter.emplace(const_cast<File*>(this), append);
+   Writer newWriter {const_cast<File*>(this), append};
+   return &mWriter.emplace(Abandon(newWriter));
 }
 
 /// Get a file interface with filename, relative to this file                 
@@ -161,7 +164,9 @@ File::Reader::Reader(File* file)
 ///   @param file - the file interface                                        
 File::Reader::Reader(Abandoned<Reader>&& other)
    : A::File::Reader {*other}
-   , mHandle {Abandon(other->mHandle)} { }
+   , mHandle {other->mHandle} {
+   other->mHandle = nullptr;
+}
 
 /// File reader destructor                                                    
 File::Reader::~Reader() {
@@ -230,7 +235,9 @@ File::Writer::Writer(File* file, bool append)
 ///   @param other - the writer                                               
 File::Writer::Writer(Abandoned<Writer>&& other)
    : A::File::Writer {*other}
-   , mHandle {Abandon(other->mHandle)} { }
+   , mHandle {other->mHandle} {
+   other->mHandle = nullptr;
+}
 
 /// File writer destructor                                                    
 File::Writer::~Writer() {
