@@ -13,7 +13,7 @@
 ///   @param producer - the folder producer                                   
 ///   @param descriptor - instructions for configuring the folder             
 Folder::Folder(FileSystem* producer, const Neat& descriptor)
-   : A::Folder {MetaOf<::Folder>(), descriptor}
+   : A::Folder {MetaOf<::Folder>()}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 

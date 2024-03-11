@@ -13,6 +13,7 @@ LANGULUS_DEFINE_MODULE(
    FileSystem, File, Folder
 )
 
+
 /// Module construction                                                       
 ///   @param runtime - the runtime that owns the module                       
 ///   @param descriptor - instructions for configuring the module             
@@ -24,10 +25,8 @@ FileSystem::FileSystem(Runtime* runtime, const Neat&)
 
    // Initialize the virtual file system                                
    if (0 == PHYSFS_init(nullptr)) {
-      LANGULUS_ASSERT(
-         false, FileSystem, "Error initializing file system",
-         " due to PHYSFS_init error: ", GetLastError()
-      );
+      LANGULUS_OOPS(FileSystem, "Error initializing file system",
+         " due to PHYSFS_init error: ", GetLastError());
    }
 
    // Get the working and data directories                              
@@ -40,11 +39,13 @@ FileSystem::FileSystem(Runtime* runtime, const Neat&)
    // Mount main read/write path                                        
    const auto dataio = (mWorkingPath / mMainDataPath).Terminate();
    if (0 == PHYSFS_mount(dataio.GetRaw(), nullptr, 0)) {
-      LANGULUS_OOPS(FileSystem,
+      Logger::Error(Self(),
          "Can't mount main data directory `", dataio,
-         "` due to PHYSFS_mount error: ", GetLastError()
-      );
+         "` due to PHYSFS_mount error: ", GetLastError());
+      Detach();
+      LANGULUS_THROW(FileSystem, "Can't mount main data directory");
    }
+
    VERBOSE_VFS("Mounted main data directory: ", dataio);
 
    // Set main write path                                               
@@ -55,9 +56,7 @@ FileSystem::FileSystem(Runtime* runtime, const Neat&)
          GetLastError()
       );
    }
-   else {
-      VERBOSE_VFS("Mounted main write directory: ", dataio);
-   }
+   else VERBOSE_VFS("Mounted main write directory: ", dataio);
 
    // Log supported file types                                          
    auto supported = PHYSFS_supportedArchiveTypes();
@@ -75,6 +74,10 @@ FileSystem::FileSystem(Runtime* runtime, const Neat&)
 
 /// Shutdown PhysFS                                                           
 FileSystem::~FileSystem() {
+   Detach();
+}
+
+void FileSystem::Detach() {
    // Release all files before shutting physfs down                     
    mFolderMap.Reset();
    mFileMap.Reset();
@@ -84,7 +87,7 @@ FileSystem::~FileSystem() {
 
    // Shut PhysFS down                                                  
    if (0 == PHYSFS_deinit()) {
-      Logger::Error(Self(), 
+      Logger::Error(Self(),
          "Error deinitializing file system due to PHYSFS_deinit error: ",
          GetLastError()
       );

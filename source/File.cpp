@@ -13,7 +13,7 @@
 ///   @param producer - the file producer                                     
 ///   @param descriptor - instructions for configuring the GUI                
 File::File(FileSystem* producer, const Neat& descriptor)
-   : A::File {MetaOf<::File>(), descriptor}
+   : A::File {MetaOf<::File>()}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 

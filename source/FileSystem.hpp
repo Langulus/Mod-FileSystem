@@ -35,6 +35,7 @@ public:
    ~FileSystem();
 
    bool Update(Time);
+   void Detach();
 
    void Create(Verb&);
    void Select(Verb&);
