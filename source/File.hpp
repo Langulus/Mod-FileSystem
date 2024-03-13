@@ -7,6 +7,7 @@
 ///                                                                           
 #pragma once
 #include "Common.hpp"
+#include <Flow/Factory.hpp>
 #include <Flow/Verbs/Associate.hpp>
 #include <Flow/Verbs/Catenate.hpp>
 #include <Flow/Verbs/Select.hpp>
@@ -17,7 +18,7 @@
 ///                                                                           
 ///   A file                                                                  
 ///                                                                           
-struct File final : A::File, ProducedFrom<FileSystem> {
+struct File final : A::File, Flow::ProducedFrom<FileSystem> {
    LANGULUS(ABSTRACT) false;
    LANGULUS(PRODUCER) FileSystem;
    LANGULUS_BASES(A::File);

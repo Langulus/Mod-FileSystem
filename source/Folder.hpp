@@ -7,6 +7,7 @@
 ///                                                                           
 #pragma once
 #include "Common.hpp"
+#include <Flow/Factory.hpp>
 #include <Flow/Verbs/Create.hpp>
 #include <Flow/Verbs/Select.hpp>
 
