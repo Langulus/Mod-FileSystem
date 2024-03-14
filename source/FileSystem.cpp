@@ -121,7 +121,7 @@ void FileSystem::Select(Verb& verb) {
 ///   @return the file interface or nullptr on failure                        
 Ref<A::File> FileSystem::GetFile(const Path& path) {
    if (not path)
-      return nullptr;
+      return {};
 
    // Check if file is already interfaced                               
    const auto normalizedPath = path.Lowercase();
@@ -138,7 +138,7 @@ Ref<A::File> FileSystem::GetFile(const Path& path) {
       return filePtr;
    }
 
-   return nullptr;
+   return {};
 }
 
 /// Interface a folder                                                        
@@ -148,7 +148,7 @@ Ref<A::File> FileSystem::GetFile(const Path& path) {
 ///   @return the file interface or nullptr on failure                        
 Ref<A::Folder> FileSystem::GetFolder(const Path& path) {
    if (not path)
-      return nullptr;
+      return {};
 
    // Check if folder is already interfaced                             
    const auto normalizedPath = path.Lowercase();
@@ -165,5 +165,5 @@ Ref<A::Folder> FileSystem::GetFolder(const Path& path) {
       return folderPtr;
    }
 
-   return nullptr;
+   return {};
 }

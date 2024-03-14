@@ -74,6 +74,12 @@ File::File(FileSystem* producer, const Neat& descriptor)
    VERBOSE_VFS("Initialized");
 }
 
+/// React on environmental change                                             
+void File::Detach() {
+   mFilePath.Reset();
+   ProducedFrom<FileSystem>::Detach();
+}
+
 /// Read a file and deserialize it as the required type                       
 Any File::ReadAs(DMeta) const {
    TODO();

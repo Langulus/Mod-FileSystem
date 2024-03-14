@@ -43,6 +43,12 @@ Folder::Folder(FileSystem* producer, const Neat& descriptor)
 }
 
 /// React on environmental change                                             
+void Folder::Detach() {
+   mFolderPath.Reset();
+   ProducedFrom<FileSystem>::Detach();
+}
+
+/// React on environmental change                                             
 void Folder::Refresh() {}
 
 /// Create or delete files and subfolders under this folder                   

@@ -80,6 +80,7 @@ private:
 public:
    File(FileSystem*, const Neat&);
 
+   void Detach();
    void Refresh() {}
 
    void Associate(Verb&);

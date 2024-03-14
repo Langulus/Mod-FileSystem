@@ -30,6 +30,7 @@ private:
 public:
    Folder(FileSystem*, const Neat&);
 
+   void Detach();
    void Refresh();
    void Create(Verb&);
    void Select(Verb&);
