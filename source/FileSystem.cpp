@@ -56,7 +56,9 @@ FileSystem::FileSystem(Runtime* runtime, const Neat&)
          GetLastError()
       );
    }
-   else VERBOSE_VFS("Mounted main write directory: ", dataio);
+   else {
+      VERBOSE_VFS("Mounted main write directory: ", dataio);
+   }
 
    // Log supported file types                                          
    auto supported = PHYSFS_supportedArchiveTypes();
