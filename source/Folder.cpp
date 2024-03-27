@@ -14,7 +14,7 @@
 ///   @param producer - the folder producer                                   
 ///   @param descriptor - instructions for configuring the folder             
 Folder::Folder(FileSystem* producer, const Neat& descriptor)
-   : Resolvable {MetaOf<::Folder>()}
+   : Resolvable {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 

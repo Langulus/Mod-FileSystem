@@ -19,7 +19,7 @@ LANGULUS_DEFINE_MODULE(
 ///   @param runtime - the runtime that owns the module                       
 ///   @param descriptor - instructions for configuring the module             
 FileSystem::FileSystem(Runtime* runtime, const Neat&)
-   : Resolvable {MetaOf<::FileSystem>()}
+   : Resolvable {this}
    , Module {runtime}
    , mFiles {this}
    , mFolders {this} {

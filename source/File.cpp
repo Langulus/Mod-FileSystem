@@ -14,7 +14,7 @@
 ///   @param producer - the file producer                                     
 ///   @param descriptor - instructions for configuring the GUI                
 File::File(FileSystem* producer, const Neat& descriptor)
-   : Resolvable {MetaOf<::File>()}
+   : Resolvable {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 
