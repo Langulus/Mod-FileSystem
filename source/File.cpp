@@ -82,7 +82,7 @@ void File::Detach() {
 }
 
 /// Read a file and deserialize it as the required type                       
-Any File::ReadAs(DMeta) const {
+Many File::ReadAs(DMeta) const {
    TODO();
    return {};
 }
@@ -188,7 +188,7 @@ File::Reader::~Reader() {
 /// Read bytes into a preallocated block                                      
 ///   @param output - [out] the read bytes go here                            
 ///   @return the number of read bytes                                        
-Offset File::Reader::Read(Any& output) {
+Offset File::Reader::Read(Many& output) {
    const auto count = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
    const auto r = static_cast<Offset>(result);
@@ -259,7 +259,7 @@ File::Writer::~Writer() {
 /// Write bytes to a preallocated block                                       
 ///   @param input - the written bytes come from here                         
 ///   @return the number of written bytes                                     
-Offset File::Writer::Write(const Any& input) {
+Offset File::Writer::Write(const Many& input) {
    const auto count = PHYSFS_uint64(input.GetBytesize());
    const auto result = static_cast<Offset>(
       PHYSFS_writeBytes(mHandle.Get(), input.GetRaw(), count));

@@ -43,7 +43,7 @@ struct File final : A::File, Flow::ProducedFrom<FileSystem> {
       Reader(Abandoned<Reader>&&);
       ~Reader();
 
-      Offset Read(Any&);
+      Offset Read(Many&);
    };
 
    /// File writer stream                                                     
@@ -59,7 +59,7 @@ struct File final : A::File, Flow::ProducedFrom<FileSystem> {
       Writer(Abandoned<Writer>&&);
       ~Writer();
 
-      Offset Write(const Any&);
+      Offset Write(const Many&);
    };
 
 private:
@@ -74,7 +74,7 @@ private:
    PHYSFS_Stat mFileInfo {};
 
    // Active file reader streams                                        
-   mutable TAny<Reader> mReaders;
+   mutable TMany<Reader> mReaders;
    // Active file writer stream (there can be only one)                 
    mutable std::optional<Writer> mWriter;
 
@@ -89,7 +89,7 @@ public:
    void Select(Verb&);
    void Interpret(Verb&);
 
-   NOD() Any ReadAs(DMeta) const;
+   NOD() Many ReadAs(DMeta) const;
 
    NOD() Ref<A::File::Reader> NewReader() const;
    NOD() Ref<A::File::Writer> NewWriter(bool append) const;
