@@ -186,8 +186,9 @@ File::Reader::~Reader() {
 }
 
 /// Read bytes into a preallocated block                                      
+///   @attention output might not be entirely filled, check return value      
 ///   @param output - [out] the read bytes go here                            
-///   @return the number of read bytes                                        
+///   @return the true number of read bytes                                   
 Offset File::Reader::Read(Many& output) {
    const auto count = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
@@ -196,8 +197,8 @@ Offset File::Reader::Read(Many& output) {
 
    LANGULUS_ASSERT(-1 != result, FileSystem,
       "Complete failure in PHYSFS_readBytes: ", GetLastError());
-   LANGULUS_ASSERT(r == count, FileSystem,
-      "Error in PHYSFS_readBytes: ", GetLastError());
+   //LANGULUS_ASSERT(r == count, FileSystem,
+   //   "Error in PHYSFS_readBytes: ", GetLastError());
 
    mProgress += r;
    return r;
