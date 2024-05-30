@@ -17,8 +17,13 @@ struct Folder;
 
 LANGULUS_EXCEPTION(FileSystem);
 
-#define VERBOSE_VFS(...)      //Logger::Verbose(Self(), __VA_ARGS__)
-#define VERBOSE_VFS_TAB(...)  //const auto tab = Logger::Verbose(Self(), __VA_ARGS__, Logger::Tabs {})
+#if 0
+   #define VERBOSE_VFS(...)      Logger::Verbose(Self(), __VA_ARGS__)
+   #define VERBOSE_VFS_TAB(...)  const auto tab = Logger::Verbose(Self(), __VA_ARGS__, Logger::Tabs {})
+#else
+   #define VERBOSE_VFS(...)      LANGULUS(NOOP)
+   #define VERBOSE_VFS_TAB(...)  LANGULUS(NOOP)
+#endif
 
 /// Include PhysFS                                                            
 #include <src/physfs.h>
