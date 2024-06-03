@@ -22,10 +22,7 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
    for (int repeat = 0; repeat != 10; ++repeat) {
       GIVEN(std::string("Init and shutdown cycle #") + std::to_string(repeat)) {
          // Create root entity                                          
-         Thing root;
-         root.SetName("ROOT");
-         root.CreateRuntime();
-         root.LoadMod("FileSystem");
+         auto root = Thing::Root<false>("FileSystem");
 
          REQUIRE(root.GetRuntime()->GetWorkingPath());
          REQUIRE(root.GetRuntime()->GetDataPath());
@@ -88,10 +85,7 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
    for (int repeat = 0; repeat != 10; ++repeat) {
       GIVEN(std::string("Init and shutdown cycle #") + std::to_string(repeat)) {
          // Create root entity                                          
-         Thing root;
-         root.SetName("ROOT");
-         root.CreateRuntime();
-         root.LoadMod("FileSystem");
+         auto root = Thing::Root<false>("FileSystem");
 
          REQUIRE(root.GetRuntime()->GetWorkingPath());
          REQUIRE(root.GetRuntime()->GetDataPath());
