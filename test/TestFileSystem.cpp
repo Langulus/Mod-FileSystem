@@ -32,7 +32,7 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
             auto producedFold = root.CreateUnit<A::Folder>("nonexistent folder");
 
             // Update once                                              
-            root.Update(Time::zero());
+            root.Update({});
             root.DumpHierarchy();
 
             REQUIRE(producedFile.GetCount() == 1);
@@ -55,7 +55,7 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
             auto producedFold = root.CreateUnitToken("Folder", "nonexistent folder");
             
             // Update once                                              
-            root.Update(Time::zero());
+            root.Update({});
             root.DumpHierarchy();
 
             REQUIRE(producedFile.GetCount() == 1);
@@ -95,7 +95,7 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
             auto producedFold = root.CreateUnit<A::Folder>("test folder");
 
             // Update once                                              
-            root.Update(Time::zero());
+            root.Update({});
             root.DumpHierarchy();
 
             REQUIRE(producedFile.GetCount() == 1);
@@ -118,7 +118,7 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
             auto producedFold = root.CreateUnitToken("Folder", "test folder");
             
             // Update once                                              
-            root.Update(Time::zero());
+            root.Update({});
             root.DumpHierarchy();
 
             REQUIRE(producedFile.GetCount() == 1);
