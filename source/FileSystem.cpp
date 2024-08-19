@@ -21,8 +21,8 @@ LANGULUS_DEFINE_MODULE(
 FileSystem::FileSystem(Runtime* runtime, const Neat&)
    : Resolvable {this}
    , Module {runtime}
-   , mFiles {this}
-   , mFolders {this} {
+   /*, mFiles {this}
+   , mFolders {this}*/ {
    VERBOSE_VFS("Initializing...");
 
    // Initialize the virtual file system                                
@@ -107,8 +107,8 @@ bool FileSystem::Update(Time) {
 /// Create/Destroy file and folder interfaces                                 
 ///   @param verb - the creation/destruction verb                             
 void FileSystem::Create(Verb& verb) {
-   mFiles.Create(verb);
-   mFolders.Create(verb);
+   mFiles.Create(this, verb);
+   mFolders.Create(this, verb);
 }
 
 /// Select file and folder interfaces                                         
@@ -135,7 +135,7 @@ Ref<A::File> FileSystem::GetFile(const Path& path) {
 
    // Produce a new file interface                                      
    Verbs::Create creator {Construct::From<File>(normalizedPath)};
-   mFiles.Create(creator);
+   mFiles.Create(this, creator);
    if (creator.IsDone()) {
       auto filePtr = creator->template As<A::File*>();
       mFileMap.Insert(normalizedPath, filePtr);
@@ -162,7 +162,7 @@ Ref<A::Folder> FileSystem::GetFolder(const Path& path) {
 
    // Produce a new folder interface                                    
    Verbs::Create creator {Construct::From<Folder>(normalizedPath)};
-   mFolders.Create(creator);
+   mFolders.Create(this, creator);
    if (creator.IsDone()) {
       auto folderPtr = creator->template As<A::Folder*>();
       mFolderMap.Insert(normalizedPath, folderPtr);
