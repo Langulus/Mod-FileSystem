@@ -20,9 +20,7 @@ LANGULUS_DEFINE_MODULE(
 ///   @param descriptor - instructions for configuring the module             
 FileSystem::FileSystem(Runtime* runtime, const Neat&)
    : Resolvable {this}
-   , Module {runtime}
-   /*, mFiles {this}
-   , mFolders {this}*/ {
+   , Module     {runtime} {
    VERBOSE_VFS("Initializing...");
 
    // Initialize the virtual file system                                
