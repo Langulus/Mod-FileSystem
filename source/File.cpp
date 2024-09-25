@@ -12,7 +12,7 @@
 /// File constructor                                                          
 ///   @param producer - the file producer                                     
 ///   @param descriptor - instructions for configuring the GUI                
-File::File(FileSystem* producer, const Neat& descriptor)
+File::File(FileSystem* producer, Describe descriptor)
    : Resolvable   {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");

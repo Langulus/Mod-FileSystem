@@ -78,7 +78,7 @@ private:
    mutable std::optional<Writer> mWriter;
 
 public:
-   File(FileSystem*, const Neat&);
+   File(FileSystem*, Describe);
 
    void Detach();
    void Refresh() {}

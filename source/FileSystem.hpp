@@ -31,7 +31,7 @@ private:
    TUnorderedMap<Path, Ref<A::Folder>> mFolderMap;
 
 public:
-   FileSystem(Runtime*, const Neat&);
+   FileSystem(Runtime*, Describe);
    ~FileSystem();
 
    bool Update(Time);

@@ -28,7 +28,7 @@ private:
    PHYSFS_Stat mFolderInfo {};
 
 public:
-   Folder(FileSystem*, const Neat&);
+   Folder(FileSystem*, Describe);
 
    void Detach();
    void Refresh();
