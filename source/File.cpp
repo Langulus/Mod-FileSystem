@@ -77,7 +77,7 @@ File::File(FileSystem* producer, const Many& descriptor)
 /// React on environmental change                                             
 void File::Detach() {
    mFilePath.Reset();
-   ProducedFrom<FileSystem>::Detach();
+   ProducedFrom::Detach();
 }
 
 /// Read a file and deserialize it as the required type                       

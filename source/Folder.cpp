@@ -45,7 +45,7 @@ Folder::Folder(FileSystem* producer, const Many& descriptor)
 /// React on environmental change                                             
 void Folder::Detach() {
    mFolderPath.Reset();
-   ProducedFrom<FileSystem>::Detach();
+   ProducedFrom::Detach();
 }
 
 /// React on environmental change                                             

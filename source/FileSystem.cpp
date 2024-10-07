@@ -82,11 +82,8 @@ void FileSystem::Detach() {
    // Release all files before shutting physfs down                     
    mFolderMap.Reset();
    mFileMap.Reset();
-
-   for (auto& item : mFolders)
-      item.Detach();
-   for (auto& item : mFiles)
-      item.Detach();
+   mFolders.Reset();
+   mFiles.Reset();
 
    // Shut PhysFS down                                                  
    if (0 == PHYSFS_deinit()) {
