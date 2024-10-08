@@ -38,7 +38,6 @@ struct File final : A::File, Flow::ProducedFrom<FileSystem> {
 
    public:
       Reader(File*);
-      Reader(Abandoned<Reader>&&);
 
       Offset Read(Many&);
    };
@@ -52,7 +51,6 @@ struct File final : A::File, Flow::ProducedFrom<FileSystem> {
 
    public:
       Writer(File*, bool append);
-      Writer(Abandoned<Writer>&&);
 
       Offset Write(const Many&);
    };
@@ -87,9 +85,9 @@ public:
 
    NOD() Many ReadAs(DMeta) const;
 
-   NOD() auto NewReader() const -> Ref<A::File::Reader>;
-   NOD() auto NewWriter(bool append) const -> Ref<A::File::Writer>;
+   NOD() auto NewReader()                 const -> Ref<A::File::Reader>;
+   NOD() auto NewWriter(bool append)      const -> Ref<A::File::Writer>;
 
-   NOD() auto RelativeFile(const Path&) const -> Ref<A::File>;
+   NOD() auto RelativeFile(const Path&)   const -> Ref<A::File>;
    NOD() auto RelativeFolder(const Path&) const -> Ref<A::Folder>;
 };

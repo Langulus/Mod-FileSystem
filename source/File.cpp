@@ -204,11 +204,6 @@ void File::Interpret(Verb&) {
 File::Reader::Reader(File* file)
    : A::File::Reader {file} {}
 
-/// Explicit file abandon-construction                                        
-///   @param file - the file interface                                        
-File::Reader::Reader(Abandoned<Reader>&& other)
-   : A::File::Reader {other.Forward()} {}
-
 /// Read bytes into a preallocated block                                      
 ///   @attention output might not be entirely filled, check return value      
 ///   @param output - [out] the read bytes go here                            
@@ -244,11 +239,6 @@ Text File::Reader::Self() const {
 ///   @param append - false if you want to delete and create the file anew    
 File::Writer::Writer(File* file, bool append)
    : A::File::Writer {file, append} {}
-
-/// Writer abandon-construction                                               
-///   @param other - the writer                                               
-File::Writer::Writer(Abandoned<Writer>&& other)
-   : A::File::Writer {other.Forward()} {}
 
 /// Write bytes to a preallocated block                                       
 ///   @param input - the written bytes come from here                         
