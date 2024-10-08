@@ -74,8 +74,21 @@ File::File(FileSystem* producer, const Many& descriptor)
    VERBOSE_VFS("Initialized");
 }
 
-/// React on environmental change                                             
+/// Destroy the file                                                          
+File::~File() {
+   Detach();
+}
+
+/// Detach the file                                                           
+/// This will block any subsequent readers and writers - they might still     
+/// remain instantiated somewhere, but will be destroyed upon scope exit      
 void File::Detach() {
+   if (mHandle) {
+      LANGULUS_ASSERT(PHYSFS_close(mHandle), FileSystem,
+         "Error in PHYSFS_close: ", GetLastError());
+      mHandle.Reset();
+   }
+
    mFilePath.Reset();
    ProducedFrom::Detach();
 }
@@ -88,18 +101,48 @@ Many File::ReadAs(DMeta) const {
 
 /// Create a new file reader                                                  
 ///   @return a pointer to the file reader                                    
-Ref<A::File::Reader> File::NewReader() const {
-   Reader newReader {const_cast<File*>(this)};
-   return &mReaders.Emplace(IndexBack, Abandon(newReader));
+auto File::NewReader() const -> Ref<A::File::Reader> {
+   LANGULUS_ASSERT(not mHandle, FileSystem,
+      "File `", mFilePath, "` is already opened");
+
+   // Open file for reading                                             
+   mHandle = PHYSFS_openRead(GetFilePath().GetRaw());
+   LANGULUS_ASSERT(mHandle, FileSystem,
+      "Can't open `", GetFilePath(), "` for reading");
+
+   Ref<::File::Reader> instance;
+   instance.New(const_cast<File*>(this));
+   return instance.As<A::File::Reader>();
 }
 
 /// Create a new file writer                                                  
 ///   @return a pointer to the file writer                                    
-Ref<A::File::Writer> File::NewWriter(bool append) const {
-   LANGULUS_ASSERT(not mWriter, FileSystem,
-      "File `", mFilePath, "` is already opened for writing");
-   Writer newWriter {const_cast<File*>(this), append};
-   return &mWriter.emplace(Abandon(newWriter));
+auto File::NewWriter(bool append) const -> Ref<A::File::Writer> {
+   // Check if file is read-only                                        
+   LANGULUS_ASSERT(
+      not Exists() or not IsReadOnly(), FileSystem,
+      "Can't open read-only `", GetFilePath(), "` for writing/appending"
+   );
+
+   LANGULUS_ASSERT(not mHandle, FileSystem,
+      "File `", mFilePath, "` is already opened");
+
+   if (append) {
+      // Open file for appending                                        
+      mHandle = PHYSFS_openAppend(GetFilePath().GetRaw());
+      LANGULUS_ASSERT(mHandle, FileSystem,
+         "Can't open `", GetFilePath(), "` for appending");
+   }
+   else {
+      // Open file anew for writing                                     
+      mHandle = PHYSFS_openWrite(GetFilePath().GetRaw());
+      LANGULUS_ASSERT(mHandle, FileSystem,
+         "Can't open `", GetFilePath(), "` for writing");
+   }
+
+   Ref<::File::Writer> instance;
+   instance.New(const_cast<File*>(this), append);
+   return instance.As<A::File::Writer>();
 }
 
 /// Get a file interface with filename, relative to this file                 
@@ -159,38 +202,21 @@ void File::Interpret(Verb&) {
 /// File reader constructor                                                   
 ///   @param file - the file interface                                        
 File::Reader::Reader(File* file)
-   : A::File::Reader {file} {
-   // Open file for reading                                             
-   mHandle = PHYSFS_openRead(mFile->GetFilePath().GetRaw());
-   LANGULUS_ASSERT(mHandle, FileSystem,
-      "Can't open `", mFile->GetFilePath(), "` for reading");
-}
+   : A::File::Reader {file} {}
 
 /// Explicit file abandon-construction                                        
 ///   @param file - the file interface                                        
 File::Reader::Reader(Abandoned<Reader>&& other)
-   : A::File::Reader {*other}
-   , mHandle {other->mHandle} {
-   other->mHandle = nullptr;
-}
-
-/// File reader destructor                                                    
-File::Reader::~Reader() {
-   if (not mHandle)
-      return;
-
-   // Close the file handle                                             
-   LANGULUS_ASSERT(PHYSFS_close(mHandle.Get()), FileSystem,
-      "Error in PHYSFS_close: ", GetLastError());
-}
+   : A::File::Reader {other.Forward()} {}
 
 /// Read bytes into a preallocated block                                      
 ///   @attention output might not be entirely filled, check return value      
 ///   @param output - [out] the read bytes go here                            
 ///   @return the true number of read bytes                                   
 Offset File::Reader::Read(Many& output) {
+   const auto file = mFile.As<::File>();
    const auto count = PHYSFS_uint64(output.GetBytesize());
-   const auto result = PHYSFS_readBytes(mHandle.Get(), output.GetRaw(), count);
+   const auto result = PHYSFS_readBytes(file->mHandle, output.GetRaw(), count);
    const auto r = static_cast<Offset>(result);
    VERBOSE_VFS("Reads ", Size {r}, " from `", mFile->GetFilePath(), '`');
 
@@ -217,52 +243,21 @@ Text File::Reader::Self() const {
 ///   @param file - the file interface                                        
 ///   @param append - false if you want to delete and create the file anew    
 File::Writer::Writer(File* file, bool append)
-   : A::File::Writer {file, append} {
-   // Check if file is read-only                                        
-   LANGULUS_ASSERT(
-      not mFile->Exists() or not mFile->IsReadOnly(), FileSystem,
-      "Can't open read-only `", mFile->GetFilePath(), "` for writing/appending"
-   );
-
-   if (append) {
-      // Open file for appending                                        
-      mHandle = PHYSFS_openAppend(mFile->GetFilePath().GetRaw());
-      LANGULUS_ASSERT(mHandle, FileSystem,
-         "Can't open `", mFile->GetFilePath(), "` for appending");
-   }
-   else {
-      // Open file anew for writing                                     
-      mHandle = PHYSFS_openWrite(mFile->GetFilePath().GetRaw());
-      LANGULUS_ASSERT(mHandle, FileSystem,
-         "Can't open `", mFile->GetFilePath(), "` for writing");
-   }
-}
+   : A::File::Writer {file, append} {}
 
 /// Writer abandon-construction                                               
 ///   @param other - the writer                                               
 File::Writer::Writer(Abandoned<Writer>&& other)
-   : A::File::Writer {*other}
-   , mHandle {other->mHandle} {
-   other->mHandle = nullptr;
-}
-
-/// File writer destructor                                                    
-File::Writer::~Writer() {
-   if (not mHandle)
-      return;
-
-   // Close the file handle                                             
-   LANGULUS_ASSERT(PHYSFS_close(mHandle.Get()), FileSystem,
-      "Error in PHYSFS_close: ", GetLastError());
-}
+   : A::File::Writer {other.Forward()} {}
 
 /// Write bytes to a preallocated block                                       
 ///   @param input - the written bytes come from here                         
 ///   @return the number of written bytes                                     
 Offset File::Writer::Write(const Many& input) {
+   const auto file = mFile.As<::File>();
    const auto count = PHYSFS_uint64(input.GetBytesize());
    const auto result = static_cast<Offset>(
-      PHYSFS_writeBytes(mHandle.Get(), input.GetRaw(), count));
+      PHYSFS_writeBytes(file->mHandle, input.GetRaw(), count));
 
    VERBOSE_VFS("Writes ", result, " to `", mFile->GetFilePath(), '`');
    LANGULUS_ASSERT(PHYSFS_uint64(result) == count, FileSystem,

@@ -41,7 +41,6 @@ FileSystem::FileSystem(Runtime* runtime, const Many&)
       Logger::Error(Self(),
          "Can't mount main data directory `", dataio,
          "` due to PHYSFS_mount error: ", GetLastError());
-      Detach();
       LANGULUS_THROW(FileSystem, "Can't mount main data directory");
    }
 
@@ -75,11 +74,8 @@ FileSystem::FileSystem(Runtime* runtime, const Many&)
 
 /// Shutdown PhysFS                                                           
 FileSystem::~FileSystem() {
-   Detach();
-}
-
-void FileSystem::Detach() {
-   // Release all files before shutting physfs down                     
+   // Release all files before shutting physfs down, otherwise handles  
+   // stored in files will become unclosable                            
    mFolderMap.Reset();
    mFileMap.Reset();
    mFolders.Reset();

@@ -31,12 +31,10 @@ private:
    TUnorderedMap<Path, Ref<A::Folder>> mFolderMap;
 
 public:
-   FileSystem(Runtime*, const Many&);
+    FileSystem(Runtime*, const Many&);
    ~FileSystem();
 
    bool Update(Time);
-   void Detach();
-
    void Create(Verb&);
    void Select(Verb&);
 

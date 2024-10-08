@@ -29,39 +29,38 @@ struct File final : A::File, Flow::ProducedFrom<FileSystem> {
       Verbs::Interpret
    );
 
+
+   ///                                                                        
    /// File reader stream                                                     
    struct Reader final : A::File::Reader {
    private:
-      // The low-level file interface                                   
-      Own<PHYSFS_File*> mHandle;
-
       Text Self() const;
 
    public:
       Reader(File*);
       Reader(Abandoned<Reader>&&);
-      ~Reader();
 
       Offset Read(Many&);
    };
 
+
+   ///                                                                        
    /// File writer stream                                                     
    struct Writer final : A::File::Writer {
    private:
-      // The low-level file interface                                   
-      Own<PHYSFS_File*> mHandle;
-
       Text Self() const;
 
    public:
       Writer(File*, bool append);
       Writer(Abandoned<Writer>&&);
-      ~Writer();
 
       Offset Write(const Many&);
    };
 
-private:
+protected:
+   friend struct Reader;
+   friend struct Writer;
+
    // Parent directory substring, mapped onto A::File::mFilePath        
    Token mParentDirectory;
    // File name after all directories, mapped onto A::File::mFilePath   
@@ -71,14 +70,12 @@ private:
 
    // Information about the file, if file exists                        
    PHYSFS_Stat mFileInfo {};
-
-   // Active file reader streams                                        
-   mutable TMany<Reader> mReaders;
-   // Active file writer stream (there can be only one)                 
-   mutable std::optional<Writer> mWriter;
+   // Opened file handle                                                
+   mutable Own<PHYSFS_File*> mHandle;
 
 public:
-   File(FileSystem*, const Many&);
+    File(FileSystem*, const Many&);
+   ~File();
 
    void Detach();
    void Refresh() {}
@@ -90,9 +87,9 @@ public:
 
    NOD() Many ReadAs(DMeta) const;
 
-   NOD() Ref<A::File::Reader> NewReader() const;
-   NOD() Ref<A::File::Writer> NewWriter(bool append) const;
+   NOD() auto NewReader() const -> Ref<A::File::Reader>;
+   NOD() auto NewWriter(bool append) const -> Ref<A::File::Writer>;
 
-   NOD() Ref<A::File>   RelativeFile(const Path&) const;
-   NOD() Ref<A::Folder> RelativeFolder(const Path&) const;
+   NOD() auto RelativeFile(const Path&) const -> Ref<A::File>;
+   NOD() auto RelativeFolder(const Path&) const -> Ref<A::Folder>;
 };
