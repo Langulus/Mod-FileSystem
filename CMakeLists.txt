@@ -35,6 +35,13 @@ target_include_directories(LangulusModFileSystem
     PRIVATE     ${PhysFS_SOURCE_DIR}
 )
 
+# Make the write and read data dir for PhysFS, because it doesn't have access   
+add_custom_command(
+    TARGET LangulusModFileSystem POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+		"$<TARGET_FILE_DIR:LangulusModFileSystem>/data"
+)
+
 if(LANGULUS_TESTING)
     #enable_testing()
 	#add_subdirectory(test)
