@@ -43,6 +43,6 @@ add_custom_command(
 )
 
 if(LANGULUS_TESTING)
-    #enable_testing()
-	#add_subdirectory(test)
+    enable_testing()
+	add_subdirectory(test)
 endif()
