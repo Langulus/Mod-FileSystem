@@ -89,7 +89,7 @@ auto File::Reference(int x) -> Count {
       mFileName = {};
       mFileExtension = {};
       mFilePath.Reset();
-      ProducedFrom::Detach();
+      ProducedFrom::Teardown();
    }
 
    return GetReferences();

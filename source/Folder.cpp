@@ -73,7 +73,7 @@ auto Folder::RelativeFolder(const Path& dirname) const -> Ref<A::Folder> {
 auto Folder::Reference(int x) -> Count {
    if (A::Folder::Reference(x) == 1) {
       mFolderPath.Reset();
-      ProducedFrom::Detach();
+      ProducedFrom::Teardown();
    }
 
    return GetReferences();
