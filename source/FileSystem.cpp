@@ -115,7 +115,7 @@ void FileSystem::Select(Verb& verb) {
 /// an object, that can do those things                                       
 ///   @param path - the filename to interface                                 
 ///   @return the file interface or nullptr on failure                        
-Ref<A::File> FileSystem::GetFile(const Path& path) {
+auto FileSystem::GetFile(const Path& path) -> Ref<A::File> {
    if (not path)
       return {};
 
@@ -142,7 +142,7 @@ Ref<A::File> FileSystem::GetFile(const Path& path) {
 /// creates an object, that can do those things                               
 ///   @param path - the directory path to interface                           
 ///   @return the file interface or nullptr on failure                        
-Ref<A::Folder> FileSystem::GetFolder(const Path& path) {
+auto FileSystem::GetFolder(const Path& path) -> Ref<A::Folder> {
    if (not path)
       return {};
 

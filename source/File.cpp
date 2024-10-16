@@ -74,23 +74,25 @@ File::File(FileSystem* producer, const Many& descriptor)
    VERBOSE_VFS("Initialized");
 }
 
-/// Destroy the file                                                          
-File::~File() {
-   Detach();
-}
-
-/// Detach the file                                                           
+/// Reference the file, detach it if fully dereferenced                       
 /// This will block any subsequent readers and writers - they might still     
 /// remain instantiated somewhere, but will be destroyed upon scope exit      
-void File::Detach() {
-   if (mHandle) {
-      LANGULUS_ASSERT(PHYSFS_close(mHandle), FileSystem,
-         "Error in PHYSFS_close: ", GetLastError());
-      mHandle.Reset();
+auto File::Reference(int x) -> Count {
+   if (A::File::Reference(x) == 1) {
+      if (mHandle) {
+         LANGULUS_ASSERT(PHYSFS_close(mHandle), FileSystem,
+            "Error in PHYSFS_close: ", GetLastError());
+         mHandle.Reset();
+      }
+
+      mParentDirectory = {};
+      mFileName = {};
+      mFileExtension = {};
+      mFilePath.Reset();
+      ProducedFrom::Detach();
    }
 
-   mFilePath.Reset();
-   ProducedFrom::Detach();
+   return GetReferences();
 }
 
 /// Read a file and deserialize it as the required type                       

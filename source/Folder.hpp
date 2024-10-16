@@ -22,19 +22,17 @@ struct Folder final : A::Folder, ProducedFrom<FileSystem> {
    LANGULUS_VERBS(Verbs::Create, Verbs::Select);
 
 private:
-   Path mFolderPath;
-
    // Information about the folder, if it exists                        
    PHYSFS_Stat mFolderInfo {};
 
 public:
    Folder(FileSystem*, const Many&);
 
-   void Detach();
+   auto Reference(int) -> Count;
    void Refresh();
    void Create(Verb&);
    void Select(Verb&);
 
-   NOD() Ref<A::File>   RelativeFile(const Path&) const;
-   NOD() Ref<A::Folder> RelativeFolder(const Path&) const;
+   NOD() auto RelativeFile  (const Path&) const -> Ref<A::File>;
+   NOD() auto RelativeFolder(const Path&) const -> Ref<A::Folder>;
 };

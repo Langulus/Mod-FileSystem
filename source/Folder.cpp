@@ -43,12 +43,6 @@ Folder::Folder(FileSystem* producer, const Many& descriptor)
 }
 
 /// React on environmental change                                             
-void Folder::Detach() {
-   mFolderPath.Reset();
-   ProducedFrom::Detach();
-}
-
-/// React on environmental change                                             
 void Folder::Refresh() {}
 
 /// Create or delete files and subfolders under this folder                   
@@ -64,13 +58,23 @@ void Folder::Select(Verb&) {
 /// Get a file interface, from a path that resides in this folder             
 ///   @param filename - path relative to this folder                          
 ///   @return the file interface                                              
-Ref<A::File> Folder::RelativeFile(const Path& filename) const {
+auto Folder::RelativeFile(const Path& filename) const -> Ref<A::File> {
    return GetProducer()->GetFile(mFolderPath / filename);
 }
 
 /// Get a subfolder interface, from a path that resides in this folder        
 ///   @param dirname - path relative to this folder                           
 ///   @return the folder interface                                            
-Ref<A::Folder> Folder::RelativeFolder(const Path& dirname) const {
+auto Folder::RelativeFolder(const Path& dirname) const -> Ref<A::Folder> {
    return GetProducer()->GetFolder(mFolderPath / dirname);
+}
+
+/// Reference the folder, detach it if fully dereferenced                     
+auto Folder::Reference(int x) -> Count {
+   if (A::Folder::Reference(x) == 1) {
+      mFolderPath.Reset();
+      ProducedFrom::Detach();
+   }
+
+   return GetReferences();
 }

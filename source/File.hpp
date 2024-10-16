@@ -59,23 +59,15 @@ protected:
    friend struct Reader;
    friend struct Writer;
 
-   // Parent directory substring, mapped onto A::File::mFilePath        
-   Token mParentDirectory;
-   // File name after all directories, mapped onto A::File::mFilePath   
-   Token mFileName;
-   // The extension of the filename, mapped onto A::File::mFilePath     
-   Token mFileExtension;
-
    // Information about the file, if file exists                        
    PHYSFS_Stat mFileInfo {};
    // Opened file handle                                                
    mutable Own<PHYSFS_File*> mHandle;
 
 public:
-    File(FileSystem*, const Many&);
-   ~File();
+   File(FileSystem*, const Many&);
 
-   void Detach();
+   auto Reference(int) -> Count;
    void Refresh() {}
 
    void Associate(Verb&);
