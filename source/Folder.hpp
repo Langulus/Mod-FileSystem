@@ -28,7 +28,6 @@ private:
 public:
    Folder(FileSystem*, const Many&);
 
-   auto Reference(int) -> Count;
    void Refresh();
    void Create(Verb&);
    void Select(Verb&);

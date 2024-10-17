@@ -68,13 +68,3 @@ auto Folder::RelativeFile(const Path& filename) const -> Ref<A::File> {
 auto Folder::RelativeFolder(const Path& dirname) const -> Ref<A::Folder> {
    return GetProducer()->GetFolder(mFolderPath / dirname);
 }
-
-/// Reference the folder, detach it if fully dereferenced                     
-auto Folder::Reference(int x) -> Count {
-   if (A::Folder::Reference(x) == 1) {
-      mFolderPath.Reset();
-      ProducedFrom::Teardown();
-   }
-
-   return GetReferences();
-}

@@ -72,12 +72,15 @@ FileSystem::FileSystem(Runtime* runtime, const Many&)
    VERBOSE_VFS("Initialized");
 }
 
-/// Shutdown PhysFS                                                           
+/// Shutdown file system                                                      
 FileSystem::~FileSystem() {
    // Release all files before shutting physfs down, otherwise handles  
    // stored in files will become unclosable                            
    mFolderMap.Reset();
    mFileMap.Reset();
+
+   Teardown();
+
    mFolders.Reset();
    mFiles.Reset();
 
@@ -88,6 +91,13 @@ FileSystem::~FileSystem() {
          GetLastError()
       );
    }
+}
+
+/// Create/Destroy file and folder interfaces                                 
+///   @param verb - the creation/destruction verb                             
+void FileSystem::Teardown() {
+   mFiles.Teardown();
+   mFolders.Teardown();
 }
 
 /// Module update routine                                                     

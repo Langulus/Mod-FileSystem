@@ -66,8 +66,8 @@ protected:
 
 public:
    File(FileSystem*, const Many&);
+  ~File();
 
-   auto Reference(int) -> Count;
    void Refresh() {}
 
    void Associate(Verb&);

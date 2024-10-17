@@ -37,8 +37,9 @@ public:
    bool Update(Time);
    void Create(Verb&);
    void Select(Verb&);
+   void Teardown();
 
-   NOD() Ref<A::File>    GetFile(const Path&);
-   NOD() Ref<A::Folder>  GetFolder(const Path&);
+   NOD() auto GetFile(const Path&) -> Ref<A::File>;
+   NOD() auto GetFolder(const Path&) -> Ref<A::Folder>;
 };
 

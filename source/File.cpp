@@ -74,25 +74,13 @@ File::File(FileSystem* producer, const Many& descriptor)
    VERBOSE_VFS("Initialized");
 }
 
-/// Reference the file, detach it if fully dereferenced                       
-/// This will block any subsequent readers and writers - they might still     
-/// remain instantiated somewhere, but will be destroyed upon scope exit      
-auto File::Reference(int x) -> Count {
-   if (A::File::Reference(x) == 1) {
-      if (mHandle) {
-         LANGULUS_ASSERT(PHYSFS_close(mHandle), FileSystem,
-            "Error in PHYSFS_close: ", GetLastError());
-         mHandle.Reset();
-      }
-
-      mParentDirectory = {};
-      mFileName = {};
-      mFileExtension = {};
-      mFilePath.Reset();
-      ProducedFrom::Teardown();
+/// File destructor                                                           
+File::~File() {
+   if (mHandle) {
+      LANGULUS_ASSERT(PHYSFS_close(mHandle), FileSystem,
+         "Error in PHYSFS_close: ", GetLastError());
+      mHandle.Reset();
    }
-
-   return GetReferences();
 }
 
 /// Read a file and deserialize it as the required type                       
@@ -150,14 +138,14 @@ auto File::NewWriter(bool append) const -> Ref<A::File::Writer> {
 /// Get a file interface with filename, relative to this file                 
 ///   @param filename - path relative to this file's path                     
 ///   @return the file interface                                              
-Ref<A::File> File::RelativeFile(const Path& filename) const {
+auto File::RelativeFile(const Path& filename) const -> Ref<A::File> {
    return GetProducer()->GetFile(Path {mParentDirectory} / filename);
 }
 
 /// Get a subfolder interface with filename, relative to this file            
 ///   @param dirname - path relative to this file's path                      
 ///   @return the folder interface                                            
-Ref<A::Folder> File::RelativeFolder(const Path& dirname) const {
+auto File::RelativeFolder(const Path& dirname) const -> Ref<A::Folder> {
    return GetProducer()->GetFolder(Path {mParentDirectory} / dirname);
 }
 
