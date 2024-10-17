@@ -69,6 +69,7 @@ public:
   ~File();
 
    void Refresh() {}
+   void Teardown();
 
    void Associate(Verb&);
    void Catenate(Verb&);

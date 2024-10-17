@@ -27,6 +27,7 @@ FileSystem::FileSystem(Runtime* runtime, const Many&)
       LANGULUS_OOPS(FileSystem, "Error initializing file system",
          " due to PHYSFS_init error: ", GetLastError());
    }
+   VERBOSE_VFS("PhysFS initialized");
 
    // Get the working and data directories                              
    // This is the only place where full paths are used                  
@@ -59,10 +60,11 @@ FileSystem::FileSystem(Runtime* runtime, const Many&)
    }
 
    // Log supported file types                                          
+   const auto tab = Logger::InfoTab(Self(), "Supports:");
    auto supported = PHYSFS_supportedArchiveTypes();
    while (*supported) {
-      Logger::Info(Self(), "Supports `", 
-         (*supported)->extension, "` files -- ", 
+      Logger::Line(
+         (*supported)->extension, " files -- ", 
          (*supported)->description, " (",
          (*supported)->author, "; ",
          (*supported)->url, ")"
@@ -74,16 +76,7 @@ FileSystem::FileSystem(Runtime* runtime, const Many&)
 
 /// Shutdown file system                                                      
 FileSystem::~FileSystem() {
-   // Release all files before shutting physfs down, otherwise handles  
-   // stored in files will become unclosable                            
-   mFolderMap.Reset();
-   mFileMap.Reset();
-
-   Teardown();
-
-   mFolders.Reset();
-   mFiles.Reset();
-
+   VERBOSE_VFS("Destroying...");
    // Shut PhysFS down                                                  
    if (0 == PHYSFS_deinit()) {
       Logger::Error(Self(),
@@ -91,13 +84,24 @@ FileSystem::~FileSystem() {
          GetLastError()
       );
    }
+   VERBOSE_VFS("PhysFS deinitialized");
+   VERBOSE_VFS("Destroyed");
 }
 
 /// Create/Destroy file and folder interfaces                                 
 ///   @param verb - the creation/destruction verb                             
 void FileSystem::Teardown() {
+   mFolderMap.Reset();
+   mFileMap.Reset();
+   mWorkingPath.Reset();
+   mMainDataPath.Reset();
    mFiles.Teardown();
    mFolders.Teardown();
+
+   // Release all files before shutting physfs down, otherwise handles  
+   // stored in files will become unclosable                            
+   mFolders.Reset();
+   mFiles.Reset();
 }
 
 /// Module update routine                                                     

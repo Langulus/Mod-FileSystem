@@ -28,9 +28,11 @@ private:
 public:
    Folder(FileSystem*, const Many&);
 
-   void Refresh();
    void Create(Verb&);
    void Select(Verb&);
+
+   void Refresh();
+   void Teardown();
 
    NOD() auto RelativeFile  (const Path&) const -> Ref<A::File>;
    NOD() auto RelativeFolder(const Path&) const -> Ref<A::Folder>;

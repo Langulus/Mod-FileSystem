@@ -45,6 +45,11 @@ Folder::Folder(FileSystem* producer, const Many& descriptor)
 /// React on environmental change                                             
 void Folder::Refresh() {}
 
+/// First stage destruction                                                   
+void Folder::Teardown() {
+   mFolderPath.Reset();
+}
+
 /// Create or delete files and subfolders under this folder                   
 void Folder::Create(Verb&) {
    TODO();
