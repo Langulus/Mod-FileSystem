@@ -24,12 +24,9 @@ file(GLOB_RECURSE
 )
 
 # Build the module                                                              
-add_library(LangulusModFileSystem SHARED ${LANGULUS_MOD_FILESYSTEM_SOURCES})
+add_langulus_mod(LangulusModFileSystem ${LANGULUS_MOD_FILESYSTEM_SOURCES})
 
-target_link_libraries(LangulusModFileSystem 
-    PRIVATE     Langulus
-                physfs-static
-)
+target_link_libraries(LangulusModFileSystem PRIVATE physfs-static)
 
 target_include_directories(LangulusModFileSystem
     PRIVATE     ${PhysFS_SOURCE_DIR}
