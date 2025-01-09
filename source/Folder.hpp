@@ -34,6 +34,6 @@ public:
    void Refresh();
    void Teardown();
 
-   NOD() auto RelativeFile  (const Path&) const -> Ref<A::File>;
-   NOD() auto RelativeFolder(const Path&) const -> Ref<A::Folder>;
+   auto RelativeFile  (const Path&) const -> Ref<A::File>;
+   auto RelativeFolder(const Path&) const -> Ref<A::Folder>;
 };

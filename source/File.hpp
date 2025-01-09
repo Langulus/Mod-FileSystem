@@ -76,11 +76,11 @@ public:
    void Select(Verb&);
    void Interpret(Verb&);
 
-   NOD() Many ReadAs(DMeta) const;
+   Many ReadAs(DMeta) const;
 
-   NOD() auto NewReader()                 const -> Ref<A::File::Reader>;
-   NOD() auto NewWriter(bool append)      const -> Ref<A::File::Writer>;
+   auto NewReader()                 const -> Ref<A::File::Reader>;
+   auto NewWriter(bool append)      const -> Ref<A::File::Writer>;
 
-   NOD() auto RelativeFile(const Path&)   const -> Ref<A::File>;
-   NOD() auto RelativeFolder(const Path&) const -> Ref<A::Folder>;
+   auto RelativeFile(const Path&)   const -> Ref<A::File>;
+   auto RelativeFolder(const Path&) const -> Ref<A::Folder>;
 };

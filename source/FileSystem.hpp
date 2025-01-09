@@ -39,7 +39,7 @@ public:
    void Select(Verb&);
    void Teardown();
 
-   NOD() auto GetFile(const Path&) -> Ref<A::File>;
-   NOD() auto GetFolder(const Path&) -> Ref<A::Folder>;
+   auto GetFile  (const Path&) -> Ref<A::File>;
+   auto GetFolder(const Path&) -> Ref<A::Folder>;
 };
 

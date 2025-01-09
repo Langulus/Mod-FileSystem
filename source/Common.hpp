@@ -28,7 +28,7 @@ LANGULUS_EXCEPTION(FileSystem);
 #include <src/physfs.h>
 
 /// Get the last PhysFS error string                                          
-NOD() LANGULUS(INLINED)
+LANGULUS(INLINED)
 Token GetLastError() noexcept {
    const auto errorCode = PHYSFS_getLastErrorCode();
    const auto readableError = PHYSFS_getErrorByCode(errorCode);
