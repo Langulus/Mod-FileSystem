@@ -7,11 +7,11 @@
 ///                                                                           
 #pragma once
 #include "Common.hpp"
-#include <Flow/Factory.hpp>
-#include <Flow/Verbs/Associate.hpp>
-#include <Flow/Verbs/Catenate.hpp>
-#include <Flow/Verbs/Select.hpp>
-#include <Flow/Verbs/Interpret.hpp>
+#include <Langulus/Flow/Factory.hpp>
+#include <Langulus/Verbs/Associate.hpp>
+#include <Langulus/Verbs/Catenate.hpp>
+#include <Langulus/Verbs/Select.hpp>
+#include <Langulus/Verbs/Interpret.hpp>
 #include <optional>
 
 

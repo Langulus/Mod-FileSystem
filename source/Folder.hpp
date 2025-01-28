@@ -7,9 +7,9 @@
 ///                                                                           
 #pragma once
 #include "Common.hpp"
-#include <Flow/Factory.hpp>
-#include <Flow/Verbs/Create.hpp>
-#include <Flow/Verbs/Select.hpp>
+#include <Langulus/Flow/Factory.hpp>
+#include <Langulus/Verbs/Create.hpp>
+#include <Langulus/Verbs/Select.hpp>
 
 
 ///                                                                           
