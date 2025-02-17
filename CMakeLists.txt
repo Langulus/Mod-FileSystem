@@ -14,7 +14,7 @@ set(PHYSFS_BUILD_SHARED FALSE CACHE BOOL "Don't allow building shared library" F
 fetch_external_module(
     PhysFS
     GIT_REPOSITORY  https://github.com/icculus/physfs.git
-    GIT_TAG         0cd18b8 # main
+    GIT_TAG         cac4490c077d6ff6fa8598de308abd6b4d5e9157 # main
 )
 
 file(GLOB_RECURSE
@@ -40,6 +40,6 @@ add_custom_command(
 )
 
 if(LANGULUS_TESTING)
-    enable_testing()
+	enable_testing()
 	add_subdirectory(test)
 endif()
