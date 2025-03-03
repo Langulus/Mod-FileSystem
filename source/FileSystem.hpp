@@ -8,6 +8,7 @@
 #pragma once
 #include "File.hpp"
 #include "Folder.hpp"
+#include <Langulus/Flow/Factory.hpp>
 #include <Langulus/Verbs/Create.hpp>
 
 
