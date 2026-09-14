@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.30)
 project(LangulusModFileSystem
     VERSION         1.0.0
     DESCRIPTION     "Langulus plug-in module for reading/writing files and folders"
@@ -14,7 +14,7 @@ set(PHYSFS_BUILD_SHARED FALSE CACHE BOOL "Don't allow building shared library" F
 fetch_external_module(
     PhysFS
     GIT_REPOSITORY  https://github.com/icculus/physfs.git
-    GIT_TAG         cac4490c077d6ff6fa8598de308abd6b4d5e9157 # main
+    GIT_TAG         release-3.2.0
 )
 
 file(GLOB_RECURSE
