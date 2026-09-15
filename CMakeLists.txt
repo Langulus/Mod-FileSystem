@@ -39,7 +39,7 @@ add_custom_command(
 		"$<TARGET_FILE_DIR:LangulusModFileSystem>/data"
 )
 
-if(LANGULUS_TESTING)
+if(LANGULUS_OPTION_TESTING)
 	enable_testing()
 	add_subdirectory(test)
 endif()
