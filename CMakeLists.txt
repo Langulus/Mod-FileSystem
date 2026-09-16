@@ -14,7 +14,7 @@ set(PHYSFS_BUILD_SHARED FALSE CACHE BOOL "Don't allow building shared library" F
 fetch_external_module(
     PhysFS
     GIT_REPOSITORY  https://github.com/icculus/physfs.git
-    GIT_TAG         release-3.2.0
+    GIT_TAG         982eccd88db02225f6ade7cff4be482aa3c04fc5 # release-3.2.0 with updated CMake requirements
 )
 
 file(GLOB_RECURSE
