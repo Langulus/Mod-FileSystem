@@ -36,7 +36,7 @@ File::File(FileSystem* producer, const Many& descriptor)
       );
 
       mExists = true;
-      mByteCount = static_cast<Offset>(mFileInfo.filesize);
+      mByteCount = static_cast<size_t>(mFileInfo.filesize);
       mIsReadOnly = mFileInfo.readonly;
       VERBOSE_VFS("Interfaces existing file: ", mFilePath);
    }
@@ -206,11 +206,11 @@ File::Reader::Reader(File* file)
 ///   @attention output might not be entirely filled, check return value      
 ///   @param output - [out] the read bytes go here                            
 ///   @return the true number of read bytes                                   
-Offset File::Reader::Read(Many& output) {
+size_t File::Reader::Read(Many& output) {
    const auto file = mFile.As<::File>();
    const auto count = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(file->mHandle, output.GetRaw(), count);
-   const auto r = static_cast<Offset>(result);
+   const auto r = static_cast<size_t>(result);
    VERBOSE_VFS("Reads ", Size {r}, " from `", mFile->GetFilePath(), '`');
 
    LANGULUS_ASSERT(-1 != result, FileSystem,
@@ -241,17 +241,17 @@ File::Writer::Writer(File* file, bool append)
 /// Write bytes to a preallocated block                                       
 ///   @param input - the written bytes come from here                         
 ///   @return the number of written bytes                                     
-Offset File::Writer::Write(const Many& input) {
+size_t File::Writer::Write(const Many& input) {
    const auto file = mFile.As<::File>();
    const auto count = PHYSFS_uint64(input.GetBytesize());
-   const auto result = static_cast<Offset>(
+   const auto result = static_cast<size_t>(
       PHYSFS_writeBytes(file->mHandle, input.GetRaw(), count));
 
    VERBOSE_VFS("Writes ", result, " to `", mFile->GetFilePath(), '`');
    LANGULUS_ASSERT(PHYSFS_uint64(result) == count, FileSystem,
       "Error in PHYSFS_writeBytes: ", GetLastError());
 
-   const auto r = static_cast<Offset>(result);
+   const auto r = static_cast<size_t>(result);
    mProgress += r;
    return r;
 }

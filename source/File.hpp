@@ -39,7 +39,7 @@ struct File final : A::File, Flow::ProducedFrom<FileSystem> {
    public:
       Reader(File*);
 
-      Offset Read(Many&);
+      size_t Read(Many&);
    };
 
 
@@ -52,7 +52,7 @@ struct File final : A::File, Flow::ProducedFrom<FileSystem> {
    public:
       Writer(File*, bool append);
 
-      Offset Write(const Many&);
+      size_t Write(const Many&);
    };
 
 protected:
