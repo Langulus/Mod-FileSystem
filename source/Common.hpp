@@ -8,13 +8,9 @@
 #pragma once
 #include <Langulus/IO.hpp>
 
-using namespace Langulus;
-
 struct FileSystem;
 struct File;
 struct Folder;
-
-LANGULUS_EXCEPTION(FileSystem);
 
 #if 0
    #define VERBOSE_VFS(...)      Logger::Info(Self(), __VA_ARGS__)
@@ -29,7 +25,7 @@ LANGULUS_EXCEPTION(FileSystem);
 
 /// Get the last PhysFS error string                                          
 LANGULUS(INLINED)
-Token GetLastError() noexcept {
+Langulus::Token GetLastError() noexcept {
    const auto errorCode = PHYSFS_getLastErrorCode();
    const auto readableError = PHYSFS_getErrorByCode(errorCode);
    if (not readableError)

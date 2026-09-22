@@ -8,14 +8,14 @@
 #pragma once
 #include "File.hpp"
 #include "Folder.hpp"
-#include <Langulus/Flow/Factory.hpp>
+#include <Langulus/Factory.hpp>
 #include <Langulus/Verbs/Create.hpp>
 
 
 ///                                                                           
 ///   File system                                                             
 ///                                                                           
-struct FileSystem final : A::FileSystem {
+struct FileSystem final : Langulus::FileSystem {
    LANGULUS(ABSTRACT) false;
    LANGULUS_BASES(A::FileSystem);
    LANGULUS_VERBS(Verbs::Create, Verbs::Select);

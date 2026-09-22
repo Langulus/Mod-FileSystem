@@ -7,7 +7,7 @@
 ///                                                                           
 #pragma once
 #include "Common.hpp"
-#include <Langulus/Flow/Producible.hpp>
+#include <Langulus/Producible.hpp>
 #include <Langulus/Verbs/Create.hpp>
 #include <Langulus/Verbs/Select.hpp>
 
@@ -15,7 +15,7 @@
 ///                                                                           
 ///   A folder                                                                
 ///                                                                           
-struct Folder final : A::Folder, ProducedFrom<FileSystem> {
+struct Folder final : Langulus::Folder, ProducedFrom<FileSystem> {
    LANGULUS(ABSTRACT) false;
    LANGULUS(PRODUCER) FileSystem;
    LANGULUS_BASES(A::Folder);

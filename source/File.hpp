@@ -7,7 +7,7 @@
 ///                                                                           
 #pragma once
 #include "Common.hpp"
-#include <Langulus/Flow/Producible.hpp>
+#include <Langulus/Producible.hpp>
 #include <Langulus/Verbs/Associate.hpp>
 #include <Langulus/Verbs/Catenate.hpp>
 #include <Langulus/Verbs/Select.hpp>
@@ -18,7 +18,7 @@
 ///                                                                           
 ///   A file                                                                  
 ///                                                                           
-struct File final : A::File, Flow::ProducedFrom<FileSystem> {
+struct File final : Langulus::File, Flow::ProducedFrom<FileSystem> {
    LANGULUS(ABSTRACT) false;
    LANGULUS(PRODUCER) FileSystem;
    LANGULUS_BASES(A::File);
@@ -32,7 +32,7 @@ struct File final : A::File, Flow::ProducedFrom<FileSystem> {
 
    ///                                                                        
    /// File reader stream                                                     
-   struct Reader final : A::File::Reader {
+   struct Reader final : Langulus::File::Reader {
    private:
       Text Self() const;
 
@@ -45,7 +45,7 @@ struct File final : A::File, Flow::ProducedFrom<FileSystem> {
 
    ///                                                                        
    /// File writer stream                                                     
-   struct Writer final : A::File::Writer {
+   struct Writer final : Langulus::File::Writer {
    private:
       Text Self() const;
 
@@ -78,9 +78,9 @@ public:
 
    Many ReadAs(DMeta) const;
 
-   auto NewReader()                 const -> Ref<A::File::Reader>;
-   auto NewWriter(bool append)      const -> Ref<A::File::Writer>;
+   auto NewReader()                 const -> Ref<Langulus::File::Reader>;
+   auto NewWriter(bool append)      const -> Ref<Langulus::File::Writer>;
 
-   auto RelativeFile(const Path&)   const -> Ref<A::File>;
-   auto RelativeFolder(const Path&) const -> Ref<A::Folder>;
+   auto RelativeFile(const Path&)   const -> Ref<Langulus::File>;
+   auto RelativeFolder(const Path&) const -> Ref<Langulus::Folder>;
 };
