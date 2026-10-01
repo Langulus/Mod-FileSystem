@@ -17,7 +17,7 @@ LANGULUS_DEFINE_MODULE(
 /// Module construction                                                       
 ///   @param runtime - the runtime that owns the module                       
 ///   @param descriptor - instructions for configuring the module             
-FileSystem::FileSystem(Runtime* runtime, const Many&)
+FileSystem::FileSystem(Runtime* runtime, Many const&)
    : Resolvable {this}
    , Module     {runtime} {
    VERBOSE_VFS("Initializing...");

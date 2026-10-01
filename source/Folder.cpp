@@ -12,7 +12,7 @@
 /// Folder constructor                                                        
 ///   @param producer - the folder producer                                   
 ///   @param descriptor - instructions for configuring the folder             
-Folder::Folder(FileSystem* producer, const Many& descriptor)
+Folder::Folder(FileSystem* producer, Many const& descriptor)
    : Resolvable   {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");

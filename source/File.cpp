@@ -12,7 +12,7 @@
 /// File constructor                                                          
 ///   @param producer - the file producer                                     
 ///   @param descriptor - instructions for configuring the GUI                
-File::File(FileSystem* producer, const Many& descriptor)
+File::File(FileSystem* producer, Many const& descriptor)
    : Resolvable   {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
@@ -241,7 +241,7 @@ File::Writer::Writer(File* file, bool append)
 /// Write bytes to a preallocated block                                       
 ///   @param input - the written bytes come from here                         
 ///   @return the number of written bytes                                     
-size_t File::Writer::Write(const Many& input) {
+size_t File::Writer::Write(Many const& input) {
    const auto file = mFile.As<::File>();
    const auto count = PHYSFS_uint64(input.GetBytesize());
    const auto result = static_cast<size_t>(

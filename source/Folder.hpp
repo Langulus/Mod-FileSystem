@@ -26,7 +26,7 @@ private:
    PHYSFS_Stat mFolderInfo {};
 
 public:
-   Folder(FileSystem*, const Many&);
+   Folder(FileSystem*, Many const&);
 
    void Create(Verb&);
    void Select(Verb&);

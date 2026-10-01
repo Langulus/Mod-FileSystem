@@ -52,7 +52,7 @@ struct File final : Langulus::File, Flow::ProducedFrom<FileSystem> {
    public:
       Writer(File*, bool append);
 
-      size_t Write(const Many&);
+      size_t Write(Many const&);
    };
 
 protected:
@@ -65,7 +65,7 @@ protected:
    mutable Own<PHYSFS_File*> mHandle;
 
 public:
-   File(FileSystem*, const Many&);
+   File(FileSystem*, Many const&);
   ~File();
 
    void Refresh() {}
