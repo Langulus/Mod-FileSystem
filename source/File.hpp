@@ -6,7 +6,7 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #pragma once
-#include "Common.hpp"
+#include "Export.hpp"
 #include <Langulus/Producible.hpp>
 #include <Langulus/Verbs/Associate.hpp>
 #include <Langulus/Verbs/Catenate.hpp>
@@ -19,8 +19,8 @@
 ///   A file                                                                  
 ///                                                                           
 struct File final : Langulus::File, Flow::ProducedFrom<FileSystem> {
-   LANGULUS(ABSTRACT) false;
-   LANGULUS(PRODUCER) FileSystem;
+   using CTTI_Abstract = No;
+   using CTTI_Producer = FileSystem;
    LANGULUS_BASES(A::File);
    LANGULUS_VERBS(
       Verbs::Associate,

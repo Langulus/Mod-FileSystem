@@ -16,7 +16,7 @@
 ///   File system                                                             
 ///                                                                           
 struct FileSystem final : Langulus::FileSystem {
-   LANGULUS(ABSTRACT) false;
+   using CTTI_Abstract = No;
    LANGULUS_BASES(A::FileSystem);
    LANGULUS_VERBS(Verbs::Create, Verbs::Select);
 

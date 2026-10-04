@@ -6,7 +6,7 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #pragma once
-#include <Langulus/IO.hpp>
+#include <Langulus/CppAPI/IO.hpp>
 
 struct FileSystem;
 struct File;
@@ -24,8 +24,7 @@ struct Folder;
 #include <src/physfs.h>
 
 /// Get the last PhysFS error string                                          
-LANGULUS(INLINED)
-Langulus::Token GetLastError() noexcept {
+inline Langulus::Token GetLastError() noexcept {
    const auto errorCode = PHYSFS_getLastErrorCode();
    const auto readableError = PHYSFS_getErrorByCode(errorCode);
    if (not readableError)

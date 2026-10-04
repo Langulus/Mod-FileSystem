@@ -6,7 +6,7 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #pragma once
-#include "Common.hpp"
+#include "Export.hpp"
 #include <Langulus/Producible.hpp>
 #include <Langulus/Verbs/Create.hpp>
 #include <Langulus/Verbs/Select.hpp>
@@ -16,8 +16,8 @@
 ///   A folder                                                                
 ///                                                                           
 struct Folder final : Langulus::Folder, ProducedFrom<FileSystem> {
-   LANGULUS(ABSTRACT) false;
-   LANGULUS(PRODUCER) FileSystem;
+   using CTTI_Abstract = No;
+   using CTTI_Producer = FileSystem;
    LANGULUS_BASES(A::Folder);
    LANGULUS_VERBS(Verbs::Create, Verbs::Select);
 
