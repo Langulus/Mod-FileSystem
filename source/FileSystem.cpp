@@ -140,7 +140,7 @@ auto FileSystem::GetFile(const Path& path) -> Ref<A::File> {
       return found.GetValue();
 
    // Produce a new file interface                                      
-   Verbs::Create creator {Construct::From<File>(normalizedPath)};
+   Verbs::Create creator {Recipe::From<File>(normalizedPath)};
    mFiles.Create(this, creator);
    if (creator.IsDone()) {
       auto filePtr = creator->template As<A::File*>();
@@ -167,7 +167,7 @@ auto FileSystem::GetFolder(const Path& path) -> Ref<A::Folder> {
       return found.GetValue();
 
    // Produce a new folder interface                                    
-   Verbs::Create creator {Construct::From<Folder>(normalizedPath)};
+   Verbs::Create creator {Recipe::From<Folder>(normalizedPath)};
    mFolders.Create(this, creator);
    if (creator.IsDone()) {
       auto folderPtr = creator->template As<A::Folder*>();
