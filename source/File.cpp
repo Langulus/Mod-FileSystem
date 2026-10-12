@@ -153,7 +153,7 @@ auto File::RelativeFile(const Path& filename) const -> Ref<A::File> {
 /// Get a subfolder interface with filename, relative to this file            
 ///   @param dirname - path relative to this file's path                      
 ///   @return the folder interface                                            
-auto File::RelativeFolder(const Path& dirname) const -> Ref<A::Folder> {
+auto File::RelativeFolder(const Path& dirname) const -> Ref<Things::Folder> {
    return GetProducer()->GetFolder(Path {mParentDirectory} / dirname);
 }
 

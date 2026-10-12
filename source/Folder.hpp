@@ -18,7 +18,7 @@
 struct Folder final : Langulus::Folder, ProducedFrom<FileSystem> {
    using CTTI_Abstract = No;
    using CTTI_Producer = FileSystem;
-   LANGULUS_BASES(A::Folder);
+   LANGULUS_BASES(Things::Folder);
    LANGULUS_VERBS(Verbs::Create, Verbs::Select);
 
 private:
@@ -35,5 +35,5 @@ public:
    void Teardown();
 
    auto RelativeFile  (const Path&) const -> Ref<A::File>;
-   auto RelativeFolder(const Path&) const -> Ref<A::Folder>;
+   auto RelativeFolder(const Path&) const -> Ref<Things::Folder>;
 };

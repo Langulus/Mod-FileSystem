@@ -22,7 +22,7 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
 
          WHEN("The file/folder is created via abstractions") {
             auto producedFile = root.CreateUnit<A::File>("nonexistent.txt");
-            auto producedFold = root.CreateUnit<A::Folder>("nonexistent folder");
+            auto producedFold = root.CreateUnit<Things::Folder>("nonexistent folder");
 
             // Update once                                              
             root.Update({});
@@ -35,9 +35,9 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
 
             REQUIRE(producedFold.GetCount() == 1);
-            REQUIRE(producedFold.CastsTo<A::Folder>(1));
+            REQUIRE(producedFold.CastsTo<Things::Folder>(1));
             REQUIRE(producedFold.IsSparse());
-            REQUIRE_FALSE(producedFold.template As<A::Folder*>()->Exists());
+            REQUIRE_FALSE(producedFold.template As<Things::Folder*>()->Exists());
 
             REQUIRE(root.GetUnits().GetCount() == 2);
          }
@@ -58,9 +58,9 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
 
             REQUIRE(producedFold.GetCount() == 1);
-            REQUIRE(producedFold.CastsTo<A::Folder>(1));
+            REQUIRE(producedFold.CastsTo<Things::Folder>(1));
             REQUIRE(producedFold.IsSparse());
-            REQUIRE_FALSE(producedFold.template As<A::Folder*>()->Exists());
+            REQUIRE_FALSE(producedFold.template As<Things::Folder*>()->Exists());
 
             REQUIRE(root.GetUnits().GetCount() == 2);
          }
@@ -85,7 +85,7 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
 
          WHEN("The file/folder is created via abstractions") {
             auto producedFile = root.CreateUnit<A::File>("test.txt");
-            auto producedFold = root.CreateUnit<A::Folder>("test folder");
+            auto producedFold = root.CreateUnit<Things::Folder>("test folder");
 
             // Update once                                              
             root.Update({});
@@ -98,9 +98,9 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
 
             REQUIRE(producedFold.GetCount() == 1);
-            REQUIRE(producedFold.CastsTo<A::Folder>(1));
+            REQUIRE(producedFold.CastsTo<Things::Folder>(1));
             REQUIRE(producedFold.IsSparse());
-            REQUIRE(producedFold.template As<A::Folder*>()->Exists());
+            REQUIRE(producedFold.template As<Things::Folder*>()->Exists());
 
             REQUIRE(root.GetUnits().GetCount() == 2);
          }
@@ -121,9 +121,9 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFile.template As<A::File*>()->GetFormat()->template IsExact<Text>());
 
             REQUIRE(producedFold.GetCount() == 1);
-            REQUIRE(producedFold.CastsTo<A::Folder>(1));
+            REQUIRE(producedFold.CastsTo<Things::Folder>(1));
             REQUIRE(producedFold.IsSparse());
-            REQUIRE(producedFold.template As<A::Folder*>()->Exists());
+            REQUIRE(producedFold.template As<Things::Folder*>()->Exists());
 
             REQUIRE(root.GetUnits().GetCount() == 2);
          }

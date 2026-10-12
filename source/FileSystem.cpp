@@ -156,7 +156,7 @@ auto FileSystem::GetFile(const Path& path) -> Ref<A::File> {
 /// creates an object, that can do those things                               
 ///   @param path - the directory path to interface                           
 ///   @return the file interface or nullptr on failure                        
-auto FileSystem::GetFolder(const Path& path) -> Ref<A::Folder> {
+auto FileSystem::GetFolder(const Path& path) -> Ref<Things::Folder> {
    if (not path)
       return {};
 
@@ -170,7 +170,7 @@ auto FileSystem::GetFolder(const Path& path) -> Ref<A::Folder> {
    Verbs::Create creator {Recipe::From<Folder>(normalizedPath)};
    mFolders.Create(this, creator);
    if (creator.IsDone()) {
-      auto folderPtr = creator->template As<A::Folder*>();
+      auto folderPtr = creator->template As<Things::Folder*>();
       mFolderMap.Insert(normalizedPath, folderPtr);
       return folderPtr;
    }

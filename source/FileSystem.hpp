@@ -29,7 +29,7 @@ private:
    // List of interfaced folders                                        
    TFactoryUnique<Folder> mFolders;
    // Folders indexed by a lowercase relative path                      
-   TUnorderedMap<Path, Ref<A::Folder>> mFolderMap;
+   TUnorderedMap<Path, Ref<Things::Folder>> mFolderMap;
 
 public:
     FileSystem(Runtime*, Many const&);
@@ -41,6 +41,6 @@ public:
    void Teardown();
 
    auto GetFile  (const Path&) -> Ref<A::File>;
-   auto GetFolder(const Path&) -> Ref<A::Folder>;
+   auto GetFolder(const Path&) -> Ref<Things::Folder>;
 };
 
