@@ -18,7 +18,7 @@ Folder::Folder(FileSystem* producer, Many const& descriptor)
    VERBOSE_VFS("Initializing...");
 
    // Get a path from the descriptor                                    
-   if (not descriptor.ExtractTrait<Traits::Name, Traits::Path>(mFolderPath))
+   if (not descriptor.ExtractTag<Tags::Name, Tags::Path>(mFolderPath))
       descriptor.ExtractDataAs(mFolderPath);
    LANGULUS_ASSERT(mFolderPath, FileSystem,
       "Can't interface empty directory path");

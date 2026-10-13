@@ -18,7 +18,7 @@ File::File(FileSystem* producer, Many const& descriptor)
    VERBOSE_VFS("Initializing...");
 
    // Get a path from the descriptor                                    
-   if (not descriptor.ExtractTrait<Traits::Name, Traits::Path>(mFilePath))
+   if (not descriptor.ExtractTag<Tags::Name, Tags::Path>(mFilePath))
       descriptor.ExtractDataAs(mFilePath);
    LANGULUS_ASSERT(mFilePath, FileSystem,
       "Can't interface empty file path");
