@@ -44,8 +44,8 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
          
       #if LANGULUS_FEATURE(MANAGED_REFLECTION)
          WHEN("The file/folder is created via tokens") {
-            auto producedFile = root.CreateUnitToken("File", "nonexistent.txt");
-            auto producedFold = root.CreateUnitToken("Folder", "nonexistent folder");
+            auto producedFile = root.CreatePartToken("File", "nonexistent.txt");
+            auto producedFold = root.CreatePartToken("Folder", "nonexistent folder");
             
             // Update once                                              
             root.Update({});
@@ -107,8 +107,8 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
          
       #if LANGULUS_FEATURE(MANAGED_REFLECTION)
          WHEN("The file/folder is created via tokens") {
-            auto producedFile = root.CreateUnitToken("File", "test.txt");
-            auto producedFold = root.CreateUnitToken("Folder", "test folder");
+            auto producedFile = root.CreatePartToken("File", "test.txt");
+            auto producedFold = root.CreatePartToken("Folder", "test folder");
             
             // Update once                                              
             root.Update({});
