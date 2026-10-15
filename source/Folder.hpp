@@ -7,6 +7,7 @@
 ///                                                                           
 #pragma once
 #include "Export.hpp"
+#include <Langulus/Path.hpp>
 #include <Langulus/Producible.hpp>
 #include <Langulus/Verbs/Create.hpp>
 #include <Langulus/Verbs/Select.hpp>
@@ -15,11 +16,11 @@
 ///                                                                           
 ///   A folder                                                                
 ///                                                                           
-struct Folder final : Langulus::Folder, ProducedFrom<FileSystem> {
-   using CTTI_Abstract = No;
-   using CTTI_Producer = FileSystem;
-   LANGULUS_BASES(Things::Folder);
-   LANGULUS_VERBS(Verbs::Create, Verbs::Select);
+struct Folder final : Things::Folder, Flow::ProducedFrom<FileSystem> {
+   using CTTI_Abstract  = No;
+   using CTTI_Producer  = FileSystem;
+   using CTTI_Bases     = Things::Folder;
+   using CTTI_Ability   = Types<Verbs::Create, Verbs::Select>;
 
 private:
    // Information about the folder, if it exists                        
@@ -31,9 +32,9 @@ public:
    void Create(Verb&);
    void Select(Verb&);
 
-   void Refresh();
    void Teardown();
 
-   auto RelativeFile  (const Path&) const -> Ref<A::File>;
-   auto RelativeFolder(const Path&) const -> Ref<Things::Folder>;
+   void Refresh() override;
+   auto RelativeFile  (Path const&) const -> Ref<Things::File> override;
+   auto RelativeFolder(Path const&) const -> Ref<Things::Folder> override;
 };

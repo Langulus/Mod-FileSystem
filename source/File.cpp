@@ -99,7 +99,7 @@ Many File::ReadAs(DMeta) const {
 
 /// Create a new file reader                                                  
 ///   @return a pointer to the file reader                                    
-auto File::NewReader() const -> Ref<A::File::Reader> {
+auto File::NewReader() const -> Ref<Things::File::Reader> {
    LANGULUS_ASSERT(not mHandle, FileSystem,
       "File `", mFilePath, "` is already opened");
 
@@ -110,12 +110,12 @@ auto File::NewReader() const -> Ref<A::File::Reader> {
 
    Ref<::File::Reader> instance;
    instance.New(const_cast<File*>(this));
-   return instance.As<A::File::Reader>();
+   return instance.As<Things::File::Reader>();
 }
 
 /// Create a new file writer                                                  
 ///   @return a pointer to the file writer                                    
-auto File::NewWriter(bool append) const -> Ref<A::File::Writer> {
+auto File::NewWriter(bool append) const -> Ref<Things::File::Writer> {
    // Check if file is read-only                                        
    LANGULUS_ASSERT(
       not Exists() or not IsReadOnly(), FileSystem,
@@ -140,20 +140,20 @@ auto File::NewWriter(bool append) const -> Ref<A::File::Writer> {
 
    Ref<::File::Writer> instance;
    instance.New(const_cast<File*>(this), append);
-   return instance.As<A::File::Writer>();
+   return instance.As<Things::File::Writer>();
 }
 
 /// Get a file interface with filename, relative to this file                 
 ///   @param filename - path relative to this file's path                     
 ///   @return the file interface                                              
-auto File::RelativeFile(const Path& filename) const -> Ref<A::File> {
+auto File::RelativeFile(Path const& filename) const -> Ref<Things::File> {
    return GetProducer()->GetFile(Path {mParentDirectory} / filename);
 }
 
 /// Get a subfolder interface with filename, relative to this file            
 ///   @param dirname - path relative to this file's path                      
 ///   @return the folder interface                                            
-auto File::RelativeFolder(const Path& dirname) const -> Ref<Things::Folder> {
+auto File::RelativeFolder(Path const& dirname) const -> Ref<Things::Folder> {
    return GetProducer()->GetFolder(Path {mParentDirectory} / dirname);
 }
 
@@ -200,7 +200,7 @@ void File::Interpret(Verb&) {
 /// File reader constructor                                                   
 ///   @param file - the file interface                                        
 File::Reader::Reader(File* file)
-   : A::File::Reader {file} {}
+   : Things::File::Reader {file} {}
 
 /// Read bytes into a preallocated block                                      
 ///   @attention output might not be entirely filled, check return value      
@@ -236,7 +236,7 @@ Text File::Reader::Self() const {
 ///   @param file - the file interface                                        
 ///   @param append - false if you want to delete and create the file anew    
 File::Writer::Writer(File* file, bool append)
-   : A::File::Writer {file, append} {}
+   : Things::File::Writer {file, append} {}
 
 /// Write bytes to a preallocated block                                       
 ///   @param input - the written bytes come from here                         

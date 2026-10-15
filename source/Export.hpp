@@ -8,6 +8,8 @@
 #pragma once
 #include <Langulus/CppAPI/IO.hpp>
 
+using namespace Langulus;
+
 struct FileSystem;
 struct File;
 struct Folder;
@@ -24,7 +26,7 @@ struct Folder;
 #include <src/physfs.h>
 
 /// Get the last PhysFS error string                                          
-inline Langulus::Token GetLastError() noexcept {
+inline Token GetLastError() noexcept {
    const auto errorCode = PHYSFS_getLastErrorCode();
    const auto readableError = PHYSFS_getErrorByCode(errorCode);
    if (not readableError)

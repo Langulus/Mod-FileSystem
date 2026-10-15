@@ -15,24 +15,24 @@
 ///                                                                           
 ///   File system                                                             
 ///                                                                           
-struct FileSystem final : Langulus::FileSystem {
-   using CTTI_Abstract = No;
-   LANGULUS_BASES(A::FileSystem);
-   LANGULUS_VERBS(Verbs::Create, Verbs::Select);
+struct FileSystem final : Things::FileSystem {
+   using CTTI_Abstract  = No;
+   using CTTI_Bases     = Things::FileSystem;
+   using CTTI_Abilities = Types<Verbs::Create, Verbs::Select>;
 
 private:
    // List of interfaced files                                          
    TFactoryUnique<File> mFiles;
    // Files indexed by a lowercase relative path                        
-   TUnorderedMap<Path, Ref<A::File>> mFileMap;
+   TMapUnsorted<Path, Ref<Things::File>> mFileMap;
 
    // List of interfaced folders                                        
    TFactoryUnique<Folder> mFolders;
    // Folders indexed by a lowercase relative path                      
-   TUnorderedMap<Path, Ref<Things::Folder>> mFolderMap;
+   TMapUnsorted<Path, Ref<Things::Folder>> mFolderMap;
 
 public:
-    FileSystem(Runtime*, Many const&);
+    FileSystem(Things::Runtime*, Many const&);
    ~FileSystem();
 
    bool Update(Time);
@@ -40,7 +40,7 @@ public:
    void Select(Verb&);
    void Teardown();
 
-   auto GetFile  (const Path&) -> Ref<A::File>;
-   auto GetFolder(const Path&) -> Ref<Things::Folder>;
+   auto GetFile  (Path const&) -> Ref<Things::File>;
+   auto GetFolder(Path const&) -> Ref<Things::Folder>;
 };
 

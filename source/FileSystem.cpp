@@ -129,7 +129,7 @@ void FileSystem::Select(Verb& verb) {
 /// an object, that can do those things                                       
 ///   @param path - the filename to interface                                 
 ///   @return the file interface or nullptr on failure                        
-auto FileSystem::GetFile(const Path& path) -> Ref<A::File> {
+auto FileSystem::GetFile(Path const& path) -> Ref<Things::File> {
    if (not path)
       return {};
 
@@ -143,7 +143,7 @@ auto FileSystem::GetFile(const Path& path) -> Ref<A::File> {
    Verbs::Create creator {Recipe::From<File>(normalizedPath)};
    mFiles.Create(this, creator);
    if (creator.IsDone()) {
-      auto filePtr = creator->template As<A::File*>();
+      auto filePtr = creator->template As<Things::File*>();
       mFileMap.Insert(normalizedPath, filePtr);
       return filePtr;
    }
@@ -156,7 +156,7 @@ auto FileSystem::GetFile(const Path& path) -> Ref<A::File> {
 /// creates an object, that can do those things                               
 ///   @param path - the directory path to interface                           
 ///   @return the file interface or nullptr on failure                        
-auto FileSystem::GetFolder(const Path& path) -> Ref<Things::Folder> {
+auto FileSystem::GetFolder(Path const& path) -> Ref<Things::Folder> {
    if (not path)
       return {};
 

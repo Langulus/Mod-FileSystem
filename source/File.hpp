@@ -7,6 +7,8 @@
 ///                                                                           
 #pragma once
 #include "Export.hpp"
+#include <Langulus/TOwn.hpp>
+#include <Langulus/Path.hpp>
 #include <Langulus/Producible.hpp>
 #include <Langulus/Verbs/Associate.hpp>
 #include <Langulus/Verbs/Catenate.hpp>
@@ -18,21 +20,21 @@
 ///                                                                           
 ///   A file                                                                  
 ///                                                                           
-struct File final : Langulus::File, Flow::ProducedFrom<FileSystem> {
-   using CTTI_Abstract = No;
-   using CTTI_Producer = FileSystem;
-   LANGULUS_BASES(A::File);
-   LANGULUS_VERBS(
+struct File final : Things::File, Flow::ProducedFrom<FileSystem> {
+   using CTTI_Abstract  = No;
+   using CTTI_Producer  = FileSystem;
+   using CTTI_Bases     = Things::File;
+   using CTTI_Ability   = Types<
       Verbs::Associate,
       Verbs::Catenate,
       Verbs::Select,
       Verbs::Interpret
-   );
+   >;
 
 
    ///                                                                        
    /// File reader stream                                                     
-   struct Reader final : Langulus::File::Reader {
+   struct Reader final : Things::File::Reader {
    private:
       Text Self() const;
 
@@ -45,7 +47,7 @@ struct File final : Langulus::File, Flow::ProducedFrom<FileSystem> {
 
    ///                                                                        
    /// File writer stream                                                     
-   struct Writer final : Langulus::File::Writer {
+   struct Writer final : Things::File::Writer {
    private:
       Text Self() const;
 
@@ -68,7 +70,7 @@ public:
    File(FileSystem*, Many const&);
   ~File();
 
-   void Refresh() {}
+   void Refresh() override {}
    void Teardown();
 
    void Associate(Verb&);
@@ -76,11 +78,10 @@ public:
    void Select(Verb&);
    void Interpret(Verb&);
 
-   Many ReadAs(DMeta) const;
+   auto ReadAs        (DMeta)       const -> Many override;
+   auto RelativeFile  (Path const&) const -> Ref<Things::File> override;
+   auto RelativeFolder(Path const&) const -> Ref<Things::Folder> override;
 
-   auto NewReader()                 const -> Ref<Langulus::File::Reader>;
-   auto NewWriter(bool append)      const -> Ref<Langulus::File::Writer>;
-
-   auto RelativeFile(const Path&)   const -> Ref<Langulus::File>;
-   auto RelativeFolder(const Path&) const -> Ref<Langulus::Folder>;
+   auto NewReader()                 const -> Ref<Things::File::Reader> override;
+   auto NewWriter(bool append)      const -> Ref<Things::File::Writer> override;
 };
