@@ -10,11 +10,11 @@
 
 
 /// Folder constructor                                                        
-///   @param producer - the folder producer                                   
-///   @param descriptor - instructions for configuring the folder             
+///   @param producer the folder producer                                     
+///   @param descriptor instructions for configuring the folder               
 Folder::Folder(FileSystem* producer, Many const& descriptor)
-   : Resolvable   {this}
-   , ProducedFrom {producer, descriptor} {
+   : /*Resolvable   {this}
+   ,*/ ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 
    // Get a path from the descriptor                                    
@@ -25,8 +25,8 @@ Folder::Folder(FileSystem* producer, Many const& descriptor)
 
    // Check if folder exists, and retrieve its info                     
    if (0 != PHYSFS_stat(mFolderPath.Terminate().GetRaw(), &mFolderInfo)) {
-      LANGULUS_ASSERT(
-         mFolderInfo.filetype == PHYSFS_FILETYPE_DIRECTORY, FileSystem,
+      LglsAssert(
+         mFolderInfo.filetype == PHYSFS_FILETYPE_DIRECTORY,
          "Path `", mFolderPath, "` doesn't point to a regular directory"
       );
 

@@ -22,12 +22,12 @@ struct FileSystem final : Things::FileSystem {
 
 private:
    // List of interfaced files                                          
-   TFactoryUnique<File> mFiles;
+   Flow::TFactoryUnique<File> mFiles;
    // Files indexed by a lowercase relative path                        
    TMapUnsorted<Path, Ref<Things::File>> mFileMap;
 
    // List of interfaced folders                                        
-   TFactoryUnique<Folder> mFolders;
+   Flow::TFactoryUnique<Folder> mFolders;
    // Folders indexed by a lowercase relative path                      
    TMapUnsorted<Path, Ref<Things::Folder>> mFolderMap;
 

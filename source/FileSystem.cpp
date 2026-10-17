@@ -15,18 +15,16 @@ LANGULUS_DEFINE_MODULE(
 
 
 /// Module construction                                                       
-///   @param runtime - the runtime that owns the module                       
-///   @param descriptor - instructions for configuring the module             
-FileSystem::FileSystem(Runtime* runtime, Many const&)
-   : Resolvable {this}
-   , Module     {runtime} {
+///   @param runtime the runtime that owns the module                         
+///   @param descriptor instructions for configuring the module               
+FileSystem::FileSystem(Things::Runtime* runtime, Many const&)
+   : /*Resolvable {this}
+   ,*/ Module     {runtime} {
    VERBOSE_VFS("Initializing...");
 
    // Initialize the virtual file system                                
-   if (0 == PHYSFS_init(nullptr)) {
-      LANGULUS_OOPS(FileSystem, "Error initializing file system",
-         " due to PHYSFS_init error: ", GetLastError());
-   }
+   LglsAssert(0 != PHYSFS_init(nullptr), "Error initializing file system"
+      " due to PHYSFS_init error: ", GetLastError());
    VERBOSE_VFS("PhysFS initialized");
 
    // Get the working and data directories                              
@@ -38,13 +36,10 @@ FileSystem::FileSystem(Runtime* runtime, Many const&)
 
    // Mount main read/write path                                        
    const auto dataio = (mWorkingPath / mMainDataPath).Terminate();
-   if (0 == PHYSFS_mount(dataio.GetRaw(), nullptr, 0)) {
-      Logger::Error(Self(),
-         "Can't mount main data directory `", dataio,
-         "` due to PHYSFS_mount error: ", GetLastError());
-      LANGULUS_THROW(FileSystem, "Can't mount main data directory");
-   }
-
+   LglsAssert(0 != PHYSFS_mount(dataio.GetRaw(), nullptr, 0),
+      "Can't mount main data directory `", dataio,
+      "` due to PHYSFS_mount error: ", GetLastError()
+   );
    VERBOSE_VFS("Mounted main data directory: ", dataio);
 
    // Set main write path                                               
@@ -78,18 +73,16 @@ FileSystem::FileSystem(Runtime* runtime, Many const&)
 FileSystem::~FileSystem() {
    VERBOSE_VFS("Destroying...");
    // Shut PhysFS down                                                  
-   if (0 == PHYSFS_deinit()) {
-      Logger::Error(Self(),
-         "Error deinitializing file system due to PHYSFS_deinit error: ",
-         GetLastError()
-      );
-   }
+   LglsAssert(0 != PHYSFS_deinit(),
+      "Error deinitializing file system due to PHYSFS_deinit error: ",
+      GetLastError()
+   );
    VERBOSE_VFS("PhysFS deinitialized");
    VERBOSE_VFS("Destroyed");
 }
 
 /// Create/Destroy file and folder interfaces                                 
-///   @param verb - the creation/destruction verb                             
+///   @param verb the creation/destruction verb                               
 void FileSystem::Teardown() {
    mFolderMap.Reset();
    mFileMap.Reset();
@@ -105,20 +98,20 @@ void FileSystem::Teardown() {
 }
 
 /// Module update routine                                                     
-///   @param dt - time from last update                                       
+///   @param dt time from last update                                         
 bool FileSystem::Update(Time) {
    return true;
 }
 
 /// Create/Destroy file and folder interfaces                                 
-///   @param verb - the creation/destruction verb                             
+///   @param verb the creation/destruction verb                               
 void FileSystem::Create(Verb& verb) {
    mFiles.Create(this, verb);
    mFolders.Create(this, verb);
 }
 
 /// Select file and folder interfaces                                         
-///   @param verb - the selection verb                                        
+///   @param verb the selection verb                                          
 void FileSystem::Select(Verb& verb) {
    mFiles.Select(verb);
    mFolders.Select(verb);
@@ -127,7 +120,7 @@ void FileSystem::Select(Verb& verb) {
 /// Interface a file                                                          
 /// This doesn't open the file, nor ensures the file exists - it only creates 
 /// an object, that can do those things                                       
-///   @param path - the filename to interface                                 
+///   @param path the filename to interface                                   
 ///   @return the file interface or nullptr on failure                        
 auto FileSystem::GetFile(Path const& path) -> Ref<Things::File> {
    if (not path)
@@ -135,7 +128,7 @@ auto FileSystem::GetFile(Path const& path) -> Ref<Things::File> {
 
    // Check if file is already interfaced                               
    const auto normalizedPath = path.Lowercase();
-   auto found = mFileMap.FindIt(normalizedPath);
+   auto found = mFileMap.Find(normalizedPath);
    if (found)
       return found.GetValue();
 
@@ -154,7 +147,7 @@ auto FileSystem::GetFile(Path const& path) -> Ref<Things::File> {
 /// Interface a folder                                                        
 /// This doesn't open the folder, nor ensures the file exists - it only       
 /// creates an object, that can do those things                               
-///   @param path - the directory path to interface                           
+///   @param path the directory path to interface                             
 ///   @return the file interface or nullptr on failure                        
 auto FileSystem::GetFolder(Path const& path) -> Ref<Things::Folder> {
    if (not path)
@@ -162,7 +155,7 @@ auto FileSystem::GetFolder(Path const& path) -> Ref<Things::Folder> {
 
    // Check if folder is already interfaced                             
    const auto normalizedPath = path.Lowercase();
-   auto found = mFolderMap.FindIt(normalizedPath);
+   auto found = mFolderMap.Find(normalizedPath);
    if (found)
       return found.GetValue();
 
