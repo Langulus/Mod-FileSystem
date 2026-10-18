@@ -22,7 +22,6 @@ File::File(FileSystem* producer, Many const& descriptor)
       descriptor.ExtractDataAs(mFilePath);
    LglsAssert(mFilePath, "Can't interface empty file path");
 
-   mFilePath = mFilePath.Terminate();
    mParentDirectory = mFilePath.GetDirectory();
    mFileName = mFilePath.GetFilename();
    mFileExtension = mFilePath.GetExtension();
@@ -202,8 +201,7 @@ size_t File::Reader::Read(Many& output) {
    VERBOSE_VFS("Reads ", Size {r}, " from `", mFile->GetFilePath(), '`');
 
    LglsAssert(-1 != result, "Complete failure in PHYSFS_readBytes: ", GetLastError());
-   //LANGULUS_ASSERT(r == count, FileSystem,
-   //   "Error in PHYSFS_readBytes: ", GetLastError());
+   //LglsAssert(r == count, "Error in PHYSFS_readBytes: ", GetLastError());
 
    mProgress += r;
    return r;

@@ -20,8 +20,7 @@ Folder::Folder(FileSystem* producer, Many const& descriptor)
    // Get a path from the descriptor                                    
    if (not descriptor.ExtractTag<Tags::Name, Tags::Path>(mFolderPath))
       descriptor.ExtractDataAs(mFolderPath);
-   LANGULUS_ASSERT(mFolderPath, FileSystem,
-      "Can't interface empty directory path");
+   LglsAssert(mFolderPath, "Can't interface empty directory path");
 
    // Check if folder exists, and retrieve its info                     
    if (0 != PHYSFS_stat(mFolderPath.Terminate().GetRaw(), &mFolderInfo)) {
