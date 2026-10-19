@@ -59,7 +59,7 @@ File::File(FileSystem* producer, Many const& descriptor)
       Logger::Warning(this, ": Ambiguous file extension for `", mFilePath,
          "`, could be any of the following: ");
       for (auto ext : candidates)
-         Logger::Warning("  * ", ext);
+         Logger::Warning("  * ", DMeta {ext});
    }
 #endif
 

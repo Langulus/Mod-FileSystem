@@ -23,7 +23,7 @@ Folder::Folder(FileSystem* producer, Many const& descriptor)
    LglsAssert(mFolderPath, "Can't interface empty directory path");
 
    // Check if folder exists, and retrieve its info                     
-   if (0 != PHYSFS_stat(mFolderPath.Terminate().GetRaw(), &mFolderInfo)) {
+   if (0 != PHYSFS_stat(mFolderPath.GetRaw(), &mFolderInfo)) {
       LglsAssert(
          mFolderInfo.filetype == PHYSFS_FILETYPE_DIRECTORY,
          "Path `", mFolderPath, "` doesn't point to a regular directory"
