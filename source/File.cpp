@@ -70,8 +70,8 @@ File::File(FileSystem* producer, Many const& descriptor)
 /// File destructor                                                           
 File::~File() {
    if (mHandle) {
-      LglsAssert(PHYSFS_close(mHandle),  "Error in PHYSFS_close: ", GetLastError());
-      mHandle.Reset();
+      LglsAssert(PHYSFS_close(*mHandle),  "Error in PHYSFS_close: ", GetLastError());
+      *mHandle = nullptr;
    }
 }
 
@@ -99,7 +99,7 @@ auto File::NewReader() const -> Ref<Things::File::Reader> {
    LglsAssert(mHandle, "Can't open `", GetFilePath(), "` for reading");
 
    Ref<::File::Reader> instance;
-   instance.New(const_cast<File*>(this));
+   instance.Emplace(this);
    return instance.As<Things::File::Reader>();
 }
 
@@ -126,7 +126,7 @@ auto File::NewWriter(bool append) const -> Ref<Things::File::Writer> {
    }
 
    Ref<::File::Writer> instance;
-   instance.New(const_cast<File*>(this), append);
+   instance.Emplace(this, append);
    return instance.As<Things::File::Writer>();
 }
 
@@ -194,7 +194,7 @@ File::Reader::Reader(File* file)
 ///   @param output [out] the read bytes go here                              
 ///   @return the true number of read bytes                                   
 size_t File::Reader::Read(Many& output) {
-   const auto file = mFile.As<::File>();
+   const auto file = mFile.As<File>();
    const auto count = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(file->mHandle, output.GetRaw(), count);
    const auto r = static_cast<size_t>(result);

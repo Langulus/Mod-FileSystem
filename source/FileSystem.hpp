@@ -22,25 +22,25 @@ struct FileSystem final : Things::FileSystem {
 
 private:
    // List of interfaced files                                          
-   Flow::TFactoryUnique<File> mFiles;
+   TFactoryUnique<File> mFiles;
    // Files indexed by a lowercase relative path                        
    TMapUnsorted<Path, Ref<Things::File>> mFileMap;
 
    // List of interfaced folders                                        
-   Flow::TFactoryUnique<Folder> mFolders;
+   TFactoryUnique<Folder> mFolders;
    // Folders indexed by a lowercase relative path                      
    TMapUnsorted<Path, Ref<Things::Folder>> mFolderMap;
 
 public:
-    FileSystem(Things::Runtime*, Many const&);
+    FileSystem(Runtime*, Many const&);
    ~FileSystem();
 
-   bool Update(Time);
    void Create(Verb&);
    void Select(Verb&);
-   void Teardown();
 
-   auto GetFile  (Path const&) -> Ref<Things::File>;
-   auto GetFolder(Path const&) -> Ref<Things::Folder>;
+   bool Update(Time) override;
+   void Teardown() override;
+   auto GetFile  (Path const&) const -> Ref<Things::File> override;
+   auto GetFolder(Path const&) const -> Ref<Things::Folder> override;
 };
 
