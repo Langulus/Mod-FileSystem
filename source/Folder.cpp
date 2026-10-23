@@ -13,8 +13,8 @@
 ///   @param producer the folder producer                                     
 ///   @param descriptor instructions for configuring the folder               
 Folder::Folder(FileSystem* producer, Many const& descriptor)
-   : /*Resolvable   {this}
-   ,*/ ProducedFrom {producer, descriptor} {
+   : Downcastable {this}
+   , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 
    // Get a path from the descriptor                                    
@@ -60,14 +60,14 @@ void Folder::Select(Verb&) {
 }
 
 /// Get a file interface, from a path that resides in this folder             
-///   @param filename - path relative to this folder                          
+///   @param filename path relative to this folder                            
 ///   @return the file interface                                              
 auto Folder::RelativeFile(Path const& filename) const -> Ref<Things::File> {
    return GetProducer()->GetFile(mFolderPath / filename);
 }
 
 /// Get a subfolder interface, from a path that resides in this folder        
-///   @param dirname - path relative to this folder                           
+///   @param dirname path relative to this folder                             
 ///   @return the folder interface                                            
 auto Folder::RelativeFolder(Path const& dirname) const -> Ref<Things::Folder> {
    return GetProducer()->GetFolder(mFolderPath / dirname);
