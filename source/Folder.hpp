@@ -16,7 +16,7 @@
 ///                                                                           
 ///   A folder                                                                
 ///                                                                           
-struct Folder final : Things::Folder, Flow::ProducedFrom<FileSystem> {
+struct Folder final : Things::Folder, ProducedFrom<FileSystem> {
    using CTTI_Abstract  = No;
    using CTTI_Producer  = FileSystem;
    using CTTI_Bases     = Things::Folder;

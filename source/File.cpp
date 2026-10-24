@@ -13,8 +13,8 @@
 ///   @param producer the file producer                                       
 ///   @param descriptor instructions for configuring the GUI                  
 File::File(FileSystem* producer, Many const& descriptor)
-   : /*Resolvable   {this}
-   ,*/ ProducedFrom {producer, descriptor} {
+   : Downcastable {this}
+   , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
 
    // Get a path from the descriptor                                    
@@ -194,10 +194,10 @@ File::Reader::Reader(File* file)
 ///   @param output [out] the read bytes go here                              
 ///   @return the true number of read bytes                                   
 size_t File::Reader::Read(Many& output) {
-   const auto file = mFile.As<File>();
-   const auto count = PHYSFS_uint64(output.GetBytesize());
-   const auto result = PHYSFS_readBytes(file->mHandle, output.GetRaw(), count);
-   const auto r = static_cast<size_t>(result);
+   const auto file   = mFile.As<File>();
+   const auto count  = PHYSFS_uint64(output.GetBytesize());
+   const auto result = PHYSFS_readBytes(*file->mHandle, output.GetRaw(), count);
+   const auto r      = static_cast<size_t>(result);
    VERBOSE_VFS("Reads ", Size {r}, " from `", mFile->GetFilePath(), '`');
 
    LglsAssert(-1 != result, "Complete failure in PHYSFS_readBytes: ", GetLastError());
@@ -207,9 +207,9 @@ size_t File::Reader::Read(Many& output) {
    return r;
 }
 
-Text File::Reader::Self() const {
+/*Text File::Reader::Self() const {
    return mFile ? mFile->Self() : "<invalid file reader>";
-}
+}*/
 
 
 
@@ -227,10 +227,9 @@ File::Writer::Writer(File* file, bool append)
 ///   @param input the written bytes come from here                           
 ///   @return the number of written bytes                                     
 size_t File::Writer::Write(Many const& input) {
-   const auto file = mFile.As<::File>();
-   const auto count = PHYSFS_uint64(input.GetBytesize());
-   const auto result = static_cast<size_t>(
-      PHYSFS_writeBytes(file->mHandle, input.GetRaw(), count));
+   const auto file   = mFile.As<::File>();
+   const auto count  = PHYSFS_uint64(input.GetBytesize());
+   const auto result = PHYSFS_writeBytes(*file->mHandle, input.GetRaw(), count);
 
    VERBOSE_VFS("Writes ", result, " to `", mFile->GetFilePath(), '`');
    LglsAssert(PHYSFS_uint64(result) == count,
@@ -241,6 +240,6 @@ size_t File::Writer::Write(Many const& input) {
    return r;
 }
 
-Text File::Writer::Self() const {
+/*Text File::Writer::Self() const {
    return mFile ? mFile->Self() : "<invalid file writer>";
-}
+}*/

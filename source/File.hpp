@@ -14,13 +14,13 @@
 #include <Langulus/Verbs/Catenate.hpp>
 #include <Langulus/Verbs/Select.hpp>
 #include <Langulus/Verbs/Interpret.hpp>
-#include <optional>
+//#include <optional>
 
 
 ///                                                                           
 ///   A file                                                                  
 ///                                                                           
-struct File final : Things::File, Flow::ProducedFrom<FileSystem> {
+struct File final : Things::File, ProducedFrom<FileSystem> {
    using CTTI_Abstract  = No;
    using CTTI_Producer  = FileSystem;
    using CTTI_Bases     = Things::File;
@@ -36,7 +36,7 @@ struct File final : Things::File, Flow::ProducedFrom<FileSystem> {
    /// File reader stream                                                     
    struct Reader final : Things::File::Reader {
    private:
-      Text Self() const;
+      //Text Self() const;
 
    public:
       Reader(File*);
@@ -49,7 +49,7 @@ struct File final : Things::File, Flow::ProducedFrom<FileSystem> {
    /// File writer stream                                                     
    struct Writer final : Things::File::Writer {
    private:
-      Text Self() const;
+      //Text Self() const;
 
    public:
       Writer(File*, bool append);
