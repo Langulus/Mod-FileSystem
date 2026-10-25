@@ -99,8 +99,8 @@ auto File::NewReader() const -> Ref<Things::File::Reader> {
    LglsAssert(mHandle, "Can't open `", GetFilePath(), "` for reading");
 
    Ref<::File::Reader> instance;
-   instance.Emplace(this);
-   return instance.As<Things::File::Reader>();
+   instance.New(this);
+   return instance.As<Things::File::Reader*>();
 }
 
 /// Create a new file writer                                                  
@@ -126,8 +126,8 @@ auto File::NewWriter(bool append) const -> Ref<Things::File::Writer> {
    }
 
    Ref<::File::Writer> instance;
-   instance.Emplace(this, append);
-   return instance.As<Things::File::Writer>();
+   instance.New(this, append);
+   return instance.As<Things::File::Writer*>();
 }
 
 /// Get a file interface with filename, relative to this file                 
@@ -194,7 +194,7 @@ File::Reader::Reader(File* file)
 ///   @param output [out] the read bytes go here                              
 ///   @return the true number of read bytes                                   
 size_t File::Reader::Read(Many& output) {
-   const auto file   = mFile.As<File>();
+   const auto file   = mFile.As<File*>();
    const auto count  = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(*file->mHandle, output.GetRaw(), count);
    const auto r      = static_cast<size_t>(result);
@@ -227,7 +227,7 @@ File::Writer::Writer(File* file, bool append)
 ///   @param input the written bytes come from here                           
 ///   @return the number of written bytes                                     
 size_t File::Writer::Write(Many const& input) {
-   const auto file   = mFile.As<::File>();
+   const auto file   = mFile.As<File*>();
    const auto count  = PHYSFS_uint64(input.GetBytesize());
    const auto result = PHYSFS_writeBytes(*file->mHandle, input.GetRaw(), count);
 
