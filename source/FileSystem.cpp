@@ -18,8 +18,8 @@ LANGULUS_DEFINE_MODULE(
 ///   @param runtime the runtime that owns the module                         
 ///   @param descriptor instructions for configuring the module               
 FileSystem::FileSystem(Runtime* runtime, Many const&)
-   : /*Resolvable {this}
-   ,*/ Module     {runtime} {
+   : Downcastable {this}
+   , Module       {runtime} {
    VERBOSE_VFS("Initializing...");
 
    // Initialize the virtual file system                                
@@ -35,7 +35,7 @@ FileSystem::FileSystem(Runtime* runtime, Many const&)
    VERBOSE_VFS("Detected working path: `", mWorkingPath, '`');
 
    // Mount main read/write path                                        
-   const auto dataio = (mWorkingPath / mMainDataPath).Terminate();
+   const auto dataio = mWorkingPath / mMainDataPath;
    LglsAssert(0 != PHYSFS_mount(dataio.GetRaw(), nullptr, 0),
       "Can't mount main data directory `", dataio,
       "` due to PHYSFS_mount error: ", GetLastError()
@@ -44,8 +44,8 @@ FileSystem::FileSystem(Runtime* runtime, Many const&)
 
    // Set main write path                                               
    if (0 == PHYSFS_setWriteDir(dataio.GetRaw())) {
-      Logger::Warning(Self(), "Can't set write directory: ", dataio);
-      Logger::Warning(Self(),
+      Logger::Warning(this, ": Can't set write directory: ", dataio);
+      Logger::Warning(this,
          "File writing will be disabled, due to PHYSFS_setWriteDir error: ",
          GetLastError()
       );
@@ -55,7 +55,7 @@ FileSystem::FileSystem(Runtime* runtime, Many const&)
    }
 
    // Log supported file types                                          
-   const auto tab = Logger::InfoTab(Self(), "Supports:");
+   auto _ = Logger::InfoScoped(this, ": Supports:");
    auto supported = PHYSFS_supportedArchiveTypes();
    while (*supported) {
       Logger::Line(
@@ -122,7 +122,7 @@ void FileSystem::Select(Verb& verb) {
 /// an object, that can do those things                                       
 ///   @param path the filename to interface                                   
 ///   @return the file interface or nullptr on failure                        
-auto FileSystem::GetFile(Path const& path) -> Ref<Things::File> {
+auto FileSystem::GetFile(Path const& path) const -> Ref<Things::File> {
    if (not path)
       return {};
 
@@ -130,14 +130,14 @@ auto FileSystem::GetFile(Path const& path) -> Ref<Things::File> {
    const auto normalizedPath = path.Lowercase();
    auto found = mFileMap.Find(normalizedPath);
    if (found)
-      return found.GetValue();
+      return found.GetVal();
 
    // Produce a new file interface                                      
-   Verbs::Create creator {Recipe::From<File>(normalizedPath)};
+   Verbs::Create creator {Recipe::For<File>(normalizedPath)};
    mFiles.Create(this, creator);
    if (creator.IsDone()) {
       auto filePtr = creator->template As<Things::File*>();
-      mFileMap.Insert(normalizedPath, filePtr);
+      mFileMap.Merge(normalizedPath, filePtr);
       return filePtr;
    }
 
@@ -149,7 +149,7 @@ auto FileSystem::GetFile(Path const& path) -> Ref<Things::File> {
 /// creates an object, that can do those things                               
 ///   @param path the directory path to interface                             
 ///   @return the file interface or nullptr on failure                        
-auto FileSystem::GetFolder(Path const& path) -> Ref<Things::Folder> {
+auto FileSystem::GetFolder(Path const& path) const -> Ref<Things::Folder> {
    if (not path)
       return {};
 
@@ -157,14 +157,14 @@ auto FileSystem::GetFolder(Path const& path) -> Ref<Things::Folder> {
    const auto normalizedPath = path.Lowercase();
    auto found = mFolderMap.Find(normalizedPath);
    if (found)
-      return found.GetValue();
+      return found.GetVal();
 
    // Produce a new folder interface                                    
-   Verbs::Create creator {Recipe::From<Folder>(normalizedPath)};
+   Verbs::Create creator {Recipe::For<Folder>(normalizedPath)};
    mFolders.Create(this, creator);
    if (creator.IsDone()) {
       auto folderPtr = creator->template As<Things::Folder*>();
-      mFolderMap.Insert(normalizedPath, folderPtr);
+      mFolderMap.Merge(normalizedPath, folderPtr);
       return folderPtr;
    }
 

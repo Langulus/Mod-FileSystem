@@ -15,8 +15,8 @@ struct File;
 struct Folder;
 
 #if 0
-   #define VERBOSE_VFS(...)      Logger::Info(Self(), __VA_ARGS__)
-   #define VERBOSE_VFS_TAB(...)  const auto tab = Logger::InfoTab(Self(), __VA_ARGS__)
+   #define VERBOSE_VFS(...)      Logger::Info(this, __VA_ARGS__)
+   #define VERBOSE_VFS_TAB(...)  const auto tab = Logger::InfoTab(this, __VA_ARGS__)
 #else
    #define VERBOSE_VFS(...)      LANGULUS(NOOP)
    #define VERBOSE_VFS_TAB(...)  LANGULUS(NOOP)
