@@ -33,7 +33,7 @@ struct File final : Things::File, ProducedFrom<FileSystem> {
 
    /// File reader stream                                                     
    struct Reader final : Things::File::Reader {
-      Reader(File*);
+      Reader(::File const*);
 
       size_t Read(Bytes&) override;
    };
@@ -41,7 +41,7 @@ struct File final : Things::File, ProducedFrom<FileSystem> {
 
    /// File writer stream                                                     
    struct Writer final : Things::File::Writer {
-      Writer(File*, bool append);
+      Writer(::File*, bool append);
 
       size_t Write(Bytes const&) override;
    };
@@ -72,5 +72,5 @@ public:
    auto RelativeFolder(Path const&) const -> Ref<Things::Folder> override;
 
    auto NewReader()                 const -> Ref<Things::File::Reader> override;
-   auto NewWriter(bool append)      const -> Ref<Things::File::Writer> override;
+   auto NewWriter(bool append)            -> Ref<Things::File::Writer> override;
 };

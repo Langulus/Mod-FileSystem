@@ -105,7 +105,7 @@ auto File::NewReader() const -> Ref<Things::File::Reader> {
 
 /// Create a new file writer                                                  
 ///   @return a pointer to the file writer                                    
-auto File::NewWriter(bool append) const -> Ref<Things::File::Writer> {
+auto File::NewWriter(bool append) -> Ref<Things::File::Writer> {
    // Check if file is read-only                                        
    LglsAssert(
       not Exists() or not IsReadOnly(),
@@ -186,7 +186,7 @@ void File::Interpret(Verb&) {
 
 /// File reader constructor                                                   
 ///   @param file the file interface                                          
-File::Reader::Reader(File* file)
+File::Reader::Reader(File const* file)
    : Things::File::Reader {file} {}
 
 /// Read bytes into a preallocated block                                      
