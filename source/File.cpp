@@ -193,7 +193,7 @@ File::Reader::Reader(File* file)
 ///   @attention output might not be entirely filled, check return value      
 ///   @param output [out] the read bytes go here                              
 ///   @return the true number of read bytes                                   
-size_t File::Reader::Read(Many& output) {
+size_t File::Reader::Read(Bytes& output) {
    const auto file   = mFile.As<File*>();
    const auto count  = PHYSFS_uint64(output.GetBytesize());
    const auto result = PHYSFS_readBytes(*file->mHandle, output.GetRaw(), count);
@@ -226,7 +226,7 @@ File::Writer::Writer(File* file, bool append)
 /// Write bytes to a preallocated block                                       
 ///   @param input the written bytes come from here                           
 ///   @return the number of written bytes                                     
-size_t File::Writer::Write(Many const& input) {
+size_t File::Writer::Write(Bytes const& input) {
    const auto file   = mFile.As<File*>();
    const auto count  = PHYSFS_uint64(input.GetBytesize());
    const auto result = PHYSFS_writeBytes(*file->mHandle, input.GetRaw(), count);

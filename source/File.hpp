@@ -19,7 +19,6 @@
 
 ///                                                                           
 ///   A file                                                                  
-///                                                                           
 struct File final : Things::File, ProducedFrom<FileSystem> {
    using CTTI_Abstract  = No;
    using CTTI_Producer  = FileSystem;
@@ -32,29 +31,19 @@ struct File final : Things::File, ProducedFrom<FileSystem> {
    >;
 
 
-   ///                                                                        
    /// File reader stream                                                     
    struct Reader final : Things::File::Reader {
-   private:
-      //Text Self() const;
-
-   public:
       Reader(File*);
 
-      size_t Read(Many&);
+      size_t Read(Bytes&) override;
    };
 
 
-   ///                                                                        
    /// File writer stream                                                     
    struct Writer final : Things::File::Writer {
-   private:
-      //Text Self() const;
-
-   public:
       Writer(File*, bool append);
 
-      size_t Write(Many const&);
+      size_t Write(Bytes const&) override;
    };
 
 protected:
