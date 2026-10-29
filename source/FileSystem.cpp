@@ -69,10 +69,9 @@ FileSystem::FileSystem(Runtime* runtime, Many const&)
    VERBOSE_VFS("Initialized");
 }
 
-/// Shutdown file system                                                      
+/// Shutdown PhysFS down                                                      
 FileSystem::~FileSystem() {
    VERBOSE_VFS("Destroying...");
-   // Shut PhysFS down                                                  
    LglsAssert(0 != PHYSFS_deinit(),
       "Error deinitializing file system due to PHYSFS_deinit error: ",
       GetLastError()
@@ -81,8 +80,7 @@ FileSystem::~FileSystem() {
    VERBOSE_VFS("Destroyed");
 }
 
-/// Create/Destroy file and folder interfaces                                 
-///   @param verb the creation/destruction verb                               
+/// First-stage destruction that severs all interlinked memory                
 void FileSystem::Teardown() {
    mFolderMap.Reset();
    mFileMap.Reset();
