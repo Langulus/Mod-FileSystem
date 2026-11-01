@@ -10,11 +10,11 @@
 #include "Folder.hpp"
 #include <Langulus/Factory.hpp>
 #include <Langulus/Verbs/Create.hpp>
+#include <Langulus/Verbs/Select.hpp>
 
 
 ///                                                                           
 ///   File system                                                             
-///                                                                           
 struct FileSystem final : Things::FileSystem {
    using CTTI_Abstract  = No;
    using CTTI_Bases     = Things::FileSystem;
