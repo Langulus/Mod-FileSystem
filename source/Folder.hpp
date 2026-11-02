@@ -15,7 +15,6 @@
 
 ///                                                                           
 ///   A folder                                                                
-///                                                                           
 struct Folder final : Things::Folder, ProducedFrom<FileSystem> {
    using CTTI_Abstract  = No;
    using CTTI_Producer  = FileSystem;
@@ -27,7 +26,7 @@ private:
    PHYSFS_Stat mFolderInfo {};
 
 public:
-   Folder(FileSystem*, Many const&);
+   Folder(FileSystem*, Neat const&);
 
    void Create(Verb&);
    void Select(Verb&);

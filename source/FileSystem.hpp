@@ -32,7 +32,7 @@ private:
    mutable TMapUnsorted<Path, Ref<Things::Folder>> mFolderMap;
 
 public:
-    FileSystem(Runtime*, Many const&);
+    FileSystem(Runtime*, Neat const&);
    ~FileSystem();
 
    void Create(Verb&);
