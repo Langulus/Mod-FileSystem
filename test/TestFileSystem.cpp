@@ -39,7 +39,7 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFold.IsSparse());
             REQUIRE_FALSE(producedFold.template As<Things::Folder*>()->Exists());
 
-            REQUIRE(root.GetUnits().GetCount() == 2);
+            REQUIRE(root.GetParts().GetCount() == 2);
          }
          
       #if LANGULUS_FEATURE(MANAGED_REFLECTION)
@@ -62,7 +62,7 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFold.IsSparse());
             REQUIRE_FALSE(producedFold.template As<Things::Folder*>()->Exists());
 
-            REQUIRE(root.GetUnits().GetCount() == 2);
+            REQUIRE(root.GetParts().GetCount() == 2);
          }
       #endif
 
@@ -102,7 +102,7 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFold.IsSparse());
             REQUIRE(producedFold.template As<Things::Folder*>()->Exists());
 
-            REQUIRE(root.GetUnits().GetCount() == 2);
+            REQUIRE(root.GetParts().GetCount() == 2);
          }
          
       #if LANGULUS_FEATURE(MANAGED_REFLECTION)
@@ -125,7 +125,7 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFold.IsSparse());
             REQUIRE(producedFold.template As<Things::Folder*>()->Exists());
 
-            REQUIRE(root.GetUnits().GetCount() == 2);
+            REQUIRE(root.GetParts().GetCount() == 2);
          }
       #endif
 
