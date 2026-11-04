@@ -115,9 +115,9 @@ void FileSystem::Select(Verb& verb) {
    mFolders.Select(verb);
 }
 
-/// Interface a file                                                          
+/// Interface a file.                                                         
 /// This doesn't open the file, nor ensures the file exists - it only creates 
-/// an object, that can do those things                                       
+/// an object that can do those things.                                       
 ///   @param path the filename to interface                                   
 ///   @return the file interface or nullptr on failure                        
 auto FileSystem::GetFile(Path const& path) const -> Ref<Things::File> {
@@ -131,7 +131,7 @@ auto FileSystem::GetFile(Path const& path) const -> Ref<Things::File> {
       return found.GetVal();
 
    // Produce a new file interface                                      
-   Verbs::Create creator {Recipe::For<File>(normalizedPath)};
+   Verbs::Create creator {Recipe::For<File>(normalizedPath)};//TODO can be simplified
    mFiles.Create(this, creator);
    if (creator.IsDone()) {
       auto filePtr = creator->template As<Things::File*>();
@@ -158,7 +158,7 @@ auto FileSystem::GetFolder(Path const& path) const -> Ref<Things::Folder> {
       return found.GetVal();
 
    // Produce a new folder interface                                    
-   Verbs::Create creator {Recipe::For<Folder>(normalizedPath)};
+   Verbs::Create creator {Recipe::For<Folder>(normalizedPath)};//TODO can be simplified
    mFolders.Create(this, creator);
    if (creator.IsDone()) {
       auto folderPtr = creator->template As<Things::Folder*>();

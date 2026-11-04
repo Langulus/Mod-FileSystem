@@ -56,7 +56,7 @@ protected:
    mutable Own<PHYSFS_File*> mHandle;
 
 public:
-   File(FileSystem*, Neat const&);
+   File(FileSystem const*, Neat const&);
   ~File();
 
    void Refresh() override {}

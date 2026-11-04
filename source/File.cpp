@@ -12,7 +12,7 @@
 /// File constructor                                                          
 ///   @param producer the file producer                                       
 ///   @param descriptor instructions for configuring the GUI                  
-File::File(FileSystem* producer, Neat const& descriptor)
+File::File(FileSystem const* producer, Neat const& descriptor)
    : Downcastable {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");

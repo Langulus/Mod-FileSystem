@@ -12,7 +12,7 @@
 /// Folder constructor                                                        
 ///   @param producer the folder producer                                     
 ///   @param descriptor instructions for configuring the folder               
-Folder::Folder(FileSystem* producer, Neat const& descriptor)
+Folder::Folder(FileSystem const* producer, Neat const& descriptor)
    : Downcastable {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_VFS("Initializing...");
