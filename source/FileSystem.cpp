@@ -7,6 +7,8 @@
 ///                                                                           
 #include "FileSystem.hpp"
 
+#include <Langulus/Annies/Functional/Deepen.hpp>
+
 LANGULUS_DEFINE_MODULE(
    FileSystem, 9, "FileSystem",
    "File system", "",
