@@ -8,6 +8,7 @@
 #include "FileSystem.hpp"
 
 #include <Langulus/Annies/Functional/Deepen.hpp>
+#include <Langulus/Annies/Functional/Compare.hpp>
 
 LANGULUS_DEFINE_MODULE(
    FileSystem, 9, "FileSystem",
