@@ -21,8 +21,8 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
          REQUIRE(root.GetRuntime()->GetDataPath());
 
          WHEN("The file/folder is created via abstractions") {
-            auto producedFile = root.CreateUnit<Things::File>("nonexistent.txt");
-            auto producedFold = root.CreateUnit<Things::Folder>("nonexistent folder");
+            auto producedFile = root.CreatePart<Things::File>("nonexistent.txt");
+            auto producedFold = root.CreatePart<Things::Folder>("nonexistent folder");
 
             // Update once                                              
             root.Update({});
@@ -84,8 +84,8 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
          REQUIRE(root.GetRuntime()->GetDataPath());
 
          WHEN("The file/folder is created via abstractions") {
-            auto producedFile = root.CreateUnit<Things::File>("test.txt");
-            auto producedFold = root.CreateUnit<Things::Folder>("test folder");
+            auto producedFile = root.CreatePart<Things::File>("test.txt");
+            auto producedFold = root.CreatePart<Things::Folder>("test folder");
 
             // Update once                                              
             root.Update({});
