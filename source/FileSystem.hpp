@@ -18,7 +18,7 @@
 struct FileSystem final : Things::FileSystem {
    using CTTI_Abstract  = No;
    using CTTI_Bases     = Things::FileSystem;
-   using CTTI_Abilities = Types<Verbs::Create, Verbs::Select>;
+   using CTTI_Ability   = Types<Verbs::Create, Verbs::Select>;
 
 private:
    // List of interfaced files                                          
