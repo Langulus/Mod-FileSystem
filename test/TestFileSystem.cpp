@@ -7,13 +7,17 @@
 ///                                                                           
 #include <Langulus/CppAPI/IO.hpp>
 #include <Langulus/Testing.hpp>
+#include <Langulus/Allocator.hpp>
+
+using namespace Langulus;
+using Things::Thing;
 
 
-SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
-   static Allocator::State memoryState;
+SCENARIO("Non-existing file/folder interfacing") {
+   static MemoryState memoryState;
 
-   for (int repeat = 0; repeat != 10; ++repeat) {
-      GIVEN(std::string("Init and shutdown cycle #") + std::to_string(repeat)) {
+   GIVEN("Init and shutdown cycles") {
+      for (int repeat = 0; repeat != 10; ++repeat) {
          // Create root entity                                          
          auto root = Thing::Root<false>("FileSystem");
 
@@ -32,7 +36,7 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFile.CastsTo<Things::File>(1));
             REQUIRE(producedFile.IsSparse());
             REQUIRE_FALSE(producedFile.template As<Things::File*>()->Exists());
-            REQUIRE(producedFile.template As<Things::File*>()->GetFormat()->template IsExact<Text>());
+            REQUIRE(producedFile.template As<Things::File*>()->GetFormat() == MetaDataOf<Text>());
 
             REQUIRE(producedFold.GetCount() == 1);
             REQUIRE(producedFold.CastsTo<Things::Folder>(1));
@@ -55,7 +59,7 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFile.CastsTo<Things::File>(1));
             REQUIRE(producedFile.IsSparse());
             REQUIRE_FALSE(producedFile.template As<Things::File*>()->Exists());
-            REQUIRE(producedFile.template As<Things::File*>()->GetFormat()->template IsExact<Text>());
+            REQUIRE(producedFile.template As<Things::File*>()->GetFormat() == MetaDataOf<Text>());
 
             REQUIRE(producedFold.GetCount() == 1);
             REQUIRE(producedFold.CastsTo<Things::Folder>(1));
@@ -66,17 +70,17 @@ SCENARIO("Non-existing file/folder interfacing", "[filesystem]") {
          }
       #endif
 
-         // Check for memory leaks after each cycle                     
          REQUIRE(memoryState.Assert());
+         REQUIRE_FALSE(Allocator::CollectGarbage());
       }
    }
 }
 
-SCENARIO("Existing file/folder interfacing", "[filesystem]") {
-   static Allocator::State memoryState;
+SCENARIO("Existing file/folder interfacing") {
+   static MemoryState memoryState;
 
-   for (int repeat = 0; repeat != 10; ++repeat) {
-      GIVEN(std::string("Init and shutdown cycle #") + std::to_string(repeat)) {
+   GIVEN("Init and shutdown cycles") {
+      for (int repeat = 0; repeat != 10; ++repeat) {
          // Create root entity                                          
          auto root = Thing::Root<false>("FileSystem");
 
@@ -95,7 +99,7 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFile.CastsTo<Things::File>(1));
             REQUIRE(producedFile.IsSparse());
             REQUIRE(producedFile.template As<Things::File*>()->Exists());
-            REQUIRE(producedFile.template As<Things::File*>()->GetFormat()->template IsExact<Text>());
+            REQUIRE(producedFile.template As<Things::File*>()->GetFormat() == MetaDataOf<Text>());
 
             REQUIRE(producedFold.GetCount() == 1);
             REQUIRE(producedFold.CastsTo<Things::Folder>(1));
@@ -118,7 +122,7 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
             REQUIRE(producedFile.CastsTo<Things::File>(1));
             REQUIRE(producedFile.IsSparse());
             REQUIRE(producedFile.template As<Things::File*>()->Exists());
-            REQUIRE(producedFile.template As<Things::File*>()->GetFormat()->template IsExact<Text>());
+            REQUIRE(producedFile.template As<Things::File*>()->GetFormat() == MetaDataOf<Text>());
 
             REQUIRE(producedFold.GetCount() == 1);
             REQUIRE(producedFold.CastsTo<Things::Folder>(1));
@@ -129,8 +133,8 @@ SCENARIO("Existing file/folder interfacing", "[filesystem]") {
          }
       #endif
 
-         // Check for memory leaks after each cycle                     
          REQUIRE(memoryState.Assert());
+         REQUIRE_FALSE(Allocator::CollectGarbage());
       }
    }
 }
