@@ -135,7 +135,7 @@ auto FileSystem::GetFile(Path const& path) const -> Ref<Things::File> {
    mFiles.Create(this, creator);
    if (creator.IsDone()) {
       auto filePtr = creator->template As<Things::File*>();
-      mFileMap.Merge(normalizedPath, filePtr);
+      mFileMap.Merge(normalizedPath, Ref {filePtr});
       return filePtr;
    }
 
@@ -162,7 +162,7 @@ auto FileSystem::GetFolder(Path const& path) const -> Ref<Things::Folder> {
    mFolders.Create(this, creator);
    if (creator.IsDone()) {
       auto folderPtr = creator->template As<Things::Folder*>();
-      mFolderMap.Merge(normalizedPath, folderPtr);
+      mFolderMap.Merge(normalizedPath, Ref {folderPtr});
       return folderPtr;
    }
 
