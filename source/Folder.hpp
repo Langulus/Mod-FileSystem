@@ -31,8 +31,6 @@ public:
    void Create(Verb&);
    void Select(Verb&);
 
-   void Teardown();
-
    void Refresh() override;
    auto RelativeFile  (Path const&) const -> Ref<Things::File> override;
    auto RelativeFolder(Path const&) const -> Ref<Things::Folder> override;

@@ -75,14 +75,6 @@ File::~File() {
    }
 }
 
-/// First stage destruction                                                   
-void File::Teardown() {
-   mFilePath.Reset();
-   mParentDirectory = {};
-   mFileName = {};
-   mFileExtension = {};
-}
-
 /// Read a file and deserialize it as the required type                       
 Many File::ReadAs(DMeta) const {
    TODO();

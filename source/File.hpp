@@ -60,7 +60,6 @@ public:
   ~File();
 
    void Refresh() override {}
-   void Teardown();
 
    void Associate(Verb&);
    void Catenate(Verb&);
